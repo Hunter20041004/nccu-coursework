@@ -1,0 +1,12 @@
+{
+  "name": "microbit-anti-theft-radio",
+  "description": "Two-way micro:bit anti-theft alarm using accelerometer, crocodile clips, and radio",
+  "dependencies": {
+    "core": "*",
+    "radio": "*"
+  },
+  "files": [
+    "main.ts"
+  ],
+  "preferredEditor": "tsprj"
+}
