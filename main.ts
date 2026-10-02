@@ -1,8 +1,16 @@
 let role = ""
 let alarmActive = false
+let externalButtonWasPressed = false
 
 radio.setGroup(23)
 radio.setTransmitPower(7)
+
+// External mechanical button on micro:bit B:
+// P0 ---- button ---- GND
+// Pull-up keeps P0 at 1 when the button is released.
+// Pressing the button connects P0 to GND, so P0 becomes 0.
+pins.setPull(DigitalPin.P0, PinPullMode.PullUp)
+
 basic.showString("?")
 
 input.onButtonPressed(Button.A, function () {
@@ -25,11 +33,22 @@ input.onGesture(Gesture.Shake, function () {
     }
 })
 
-input.onPinPressed(TouchPin.P0, function () {
-    if (role == "B") {
+// Read the real external push button connected with crocodile clips.
+// Send STOP only once for each physical press.
+basic.forever(function () {
+    let externalButtonPressed = pins.digitalReadPin(DigitalPin.P0) == 0
+
+    if (role == "B" && externalButtonPressed && !externalButtonWasPressed) {
+        externalButtonWasPressed = true
         radio.sendString("STOP")
         basic.showIcon(IconNames.Yes)
     }
+
+    if (!externalButtonPressed) {
+        externalButtonWasPressed = false
+    }
+
+    basic.pause(20)
 })
 
 radio.onReceivedString(function (receivedString) {
