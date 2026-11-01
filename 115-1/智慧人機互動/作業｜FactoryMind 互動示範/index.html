@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FactoryMind 互動概念原型</title><meta name="description" content="FactoryMind 生產營運事件治理的互動概念原型；所有數據為合成情境。"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B1F38'/%3E%3Ctext x='9' y='24' fill='white' font-size='24' font-family='sans-serif'%3EF%3C/text%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><style>:root {
+        --ivory: #faf9f5;
+        --paper: #ffffff;
+        --slate: #141413;
+        --clay: #d97757;
+        --clay-d: #b85c3e;
+        --oat: #e3dacc;
+        --olive: #788c5d;
+        --g100: #f0eee6;
+        --g200: #e6e3da;
+        --g300: #d1cfc5;
+        --g500: #87867f;
+        --g700: #3d3d3a;
+
+        --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+        --sans:
+          system-ui, -apple-system, "Segoe UI", Roboto, "PingFang TC",
+          "Noto Sans TC", Helvetica, Arial, sans-serif;
+        --mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+        /* 狀態 semantic（warm-aligned，低調用） */
+        --green: #788c5d;
+        --green-soft: #eff1e8;
+        --green-border: #c8d2b8;
+        --red: #b85c3e;
+        --red-soft: #faebe3;
+        --red-border: #e8c4af;
+        --yellow: #c49845;
+        --yellow-soft: #f8efd9;
+        --yellow-border: #e8d4a0;
+        --purple: #9333ea;
+        --purple-soft: #faf5ff;
+        --purple-border: #e9d5ff;
+
+        /* ── 兼容舊 component-library snippet ─────────── */
+        /* 通用元件用 --bg / --accent / --text 等命名、alias 到 Anthropic palette */
+        --bg: var(--ivory);
+        --bg-card: var(--paper);
+        --bg-soft: var(--g100);
+        --bg-soft-2: var(--g200);
+        --border: var(--g300);
+        --border-strong: var(--g500);
+        --text: var(--slate);
+        --text-muted: var(--g700);
+        --text-soft: var(--g500);
+        --accent: var(--clay);
+        --accent-soft: #fbe9df;
+        --accent-strong: var(--clay-d);
+      }
+
+:root{--bg:#E9EEF4;--surface:#fff;--soft:#F2F6F9;--ink:#0B1F38;--muted:#52657D;--line:#DFE4ED;--accent:#0C4C80;--accent-soft:#EAF1F8;--danger:#A82A20;--danger-soft:#FCE9E7;--warning:#865500;--warning-soft:#FFF4DB;--success:#0A7136;--success-soft:#E6F6EC;--font-ui:"Noto Sans TC",system-ui,sans-serif;--font-num:"Montserrat","Noto Sans TC",sans-serif;--r-sm:8px;--r-md:14px;--r-lg:20px;--space-sm:8px;--space-md:16px;--space-lg:24px;--ease-out:cubic-bezier(.23,1,.32,1);--paper:var(--surface);--clay:var(--accent);--clay-d:var(--ink);--oat:var(--accent-soft);--g100:var(--soft);--g200:var(--line);--g300:var(--line);--g500:var(--muted);--g700:var(--ink);--slate:var(--ink);--sans:var(--font-ui);--mono:var(--font-ui)}
+*{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 var(--font-ui);-webkit-font-smoothing:antialiased}button,input,textarea{font:inherit}button{cursor:pointer;color:inherit}button:disabled{cursor:not-allowed;opacity:.5}button,a,input,textarea{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}::selection{background:#CCE0F2;color:var(--ink)}input,textarea{caret-color:var(--accent)}.num{font-family:var(--font-num);font-variant-numeric:tabular-nums}.icon{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}h1,h2,h3,p{margin:0}h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}.stage{max-width:1480px;margin:0 auto;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) 254px;gap:24px;align-items:start;padding:26px 24px}.device{min-width:0;border:1px solid #C4CEDB;border-radius:var(--r-lg);overflow:hidden;background:var(--surface);box-shadow:0 22px 50px -26px rgba(5,17,34,.4)}.chrome{height:38px;padding-top:8px;padding-bottom:8px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:#F8FAFC;border-bottom:1px solid var(--line);font-size:11px;color:var(--muted)}.chrome-left{display:flex;gap:5px;align-items:center}.chrome-left i{width:7px;height:7px;background:#BCC7D5;border-radius:50%}.chrome-title{display:flex;align-items:center;gap:7px}.chrome-title .icon{width:13px;height:13px}.app-shell{display:grid;grid-template-columns:142px minmax(0,1fr);height:676px}.sidebar{background:var(--soft);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:24px 12px 16px}.brand{font:700 18px var(--font-num);letter-spacing:-.025em;margin:0 6px 7px}.brand-small{font-size:11px;color:var(--muted);margin:0 6px 30px}.nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:0;border-radius:var(--r-sm);padding:10px 9px;text-align:left;font-size:12px;font-weight:500;min-height:44px}.nav button[aria-current=page]{background:var(--ink);color:#fff}.side-foot{margin-top:auto;font-size:11px;color:var(--muted);padding:12px 6px 0;border-top:1px solid var(--line)}.side-foot strong{color:var(--ink);display:block}.workspace{min-width:0;min-height:0;display:flex;flex-direction:column}.appbar{height:61px;flex-shrink:0;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 25px;gap:12px}.breadcrumb{font-size:12px;display:flex;gap:8px;align-items:center}.operator{font-size:11px;color:var(--muted);display:flex;gap:7px;align-items:center}.avatar{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:11px}.content{padding:23px 25px 30px;overflow:auto;flex:1;scrollbar-width:thin;scrollbar-color:#B8C4D3 transparent;min-height:0}.content::-webkit-scrollbar{width:5px}.content::-webkit-scrollbar-thumb{background:#B8C4D3;border-radius:6px}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:19px}.page-head h1{font-size:25px;line-height:1.35;font-weight:700;letter-spacing:-.025em}.page-head p{font-size:12px;color:var(--muted);margin-top:6px}.tag{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:3px 8px;font-size:11px;line-height:1.6;font-weight:500;white-space:nowrap}.tag.ink{color:var(--accent);background:var(--accent-soft)}.tag.warn{color:var(--warning);background:var(--warning-soft)}.tag.danger{color:var(--danger);background:var(--danger-soft)}.tag.success{color:var(--success);background:var(--success-soft)}.tag.neutral{color:var(--muted);background:var(--soft)}.btn{border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);padding:10px 14px;min-height:42px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:transform 120ms var(--ease-out);white-space:normal}.btn:active:not(:disabled){transform:scale(.98);transition-duration:80ms}.btn.primary{background:var(--ink);color:var(--surface);border-color:var(--ink)}.btn.link{border:0;background:transparent;color:var(--accent);padding:7px 0;min-height:36px}.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.notice{padding:13px 15px;background:var(--soft);border:1px solid var(--line);border-radius:var(--r-sm);font-size:12px;margin:14px 0 20px}.notice.warn{background:var(--warning-soft);color:var(--warning);border-color:#EEDAB2}.notice.danger{background:var(--danger-soft);color:var(--danger);border-color:#E8C1BD}.notice.success{background:var(--success-soft);color:var(--success);border-color:#BFDCC9}.notice strong{display:block;margin-bottom:3px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px;gap:10px}.section-head h2{font-size:14px;font-weight:700}.small{font-size:11px;color:var(--muted)}.empty{display:flex;align-items:center;gap:15px;padding:22px 0;margin:12px 0 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.empty .icon{width:32px;height:32px;color:var(--accent)}.empty h2{font-size:15px}.empty p{font-size:12px;color:var(--muted);margin-top:3px}.empty .btn{margin-left:auto}.machines{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.machine{border:1px solid var(--line);padding:13px;border-radius:var(--r-sm)}.machine-title{display:flex;align-items:center;justify-content:space-between;gap:6px}.machine-title strong{font:600 15px var(--font-num)}.machine p{font-size:11px;color:var(--muted);margin-top:7px}.machine-line{display:flex;align-items:center;gap:7px;font-size:11px;margin-top:5px}.dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex:none}.dot.stop{background:var(--danger)}.dot.wait{background:var(--warning)}.events{border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden}.event-row{padding:12px 14px;display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center}.event-row+.event-row{border-top:1px solid var(--line)}.event-icon{width:32px;height:32px;display:grid;place-items:center;background:var(--soft);border-radius:var(--r-sm);color:var(--accent)}.event-row h3{font-size:13px}.event-row p{font-size:11px;color:var(--muted);margin-top:2px}.role-strip{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:13px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:18px 0}.role{font-size:11px;color:var(--muted);display:flex;gap:5px;align-items:center}.role.active{color:var(--accent);font-weight:700}.role .dot{background:#B6C2D1}.role.active .dot{background:var(--accent)}.role-arrow{color:#91A3B8;font-size:13px}.gantt{border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;background:var(--surface)}.gantt-axis,.gantt-row{display:grid;grid-template-columns:62px minmax(0,1fr);align-items:center;gap:8px}.gantt-axis{font-size:11px;color:var(--muted);margin-bottom:9px}.ticks{display:flex;justify-content:space-between;font-family:var(--font-num)}.gantt-row{margin:8px 0;font-size:11px}.track{height:32px;position:relative;background:repeating-linear-gradient(to right,transparent,transparent calc(25% - 1px),var(--line) calc(25% - 1px),var(--line) 25%);border-radius:4px;background-color:var(--soft)}.bar{position:absolute;height:24px;top:4px;border-radius:4px;background:#C9D8E8;color:var(--ink);font:500 11px/24px var(--font-num);text-align:center;overflow:hidden;white-space:nowrap}.bar.strategic{background:var(--accent);color:#fff}.bar.unavailable{left:0;width:100%;background:var(--danger-soft);color:var(--danger);font-family:var(--font-ui)}.bar.preview{outline:1px dashed var(--accent);outline-offset:2px}.plan-table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}.plan-table th{padding:9px 7px;text-align:right;font-weight:500;color:var(--muted);background:var(--soft);border-bottom:1px solid var(--line)}.plan-table td{padding:11px 7px;text-align:right;border-bottom:1px solid var(--line);vertical-align:middle}.plan-table th:first-child,.plan-table td:first-child{width:29%;text-align:left}.plan-table td:first-child strong{font-size:12px;display:block}.plan-table td:last-child,.plan-table th:last-child{width:13%;text-align:center}.plan-table .selected{background:var(--accent-soft)}.plan-table .blocked{color:var(--muted)}.mobile-plan{display:none}.reason{background:var(--soft);border-radius:var(--r-sm);padding:13px 15px;margin:15px 0;font-size:12px}.reason strong{display:block;margin-bottom:4px;color:var(--accent)}.reason p{color:var(--muted)}.result-line{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:12px 0;font-size:12px}.result-line strong{font-weight:500}.task{padding:15px 0;border-bottom:1px solid var(--line)}.task-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.task h3{font-size:13px}.task p{font-size:12px;color:var(--muted);margin:5px 0 10px}.policy-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}.policy-list li{display:flex;gap:13px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:12px}.policy-list .order{font-family:var(--font-num);color:var(--accent);font-size:12px;width:19px}.policy-list .policy-meta{margin-left:auto;font-size:11px;color:var(--muted)}.policy-form{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:13px 0}.field label{display:block;font-size:12px;font-weight:500;margin-bottom:7px}.field input{width:100%;border:1px solid #B6C4D3;border-radius:var(--r-sm);padding:10px 12px;background:var(--surface);color:var(--ink);font-family:var(--font-num);min-height:44px}.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.error{color:var(--danger);font-size:12px;margin:8px 0;min-height:20px}.policy-preview{font-size:12px;padding:14px;border:1px solid var(--line);border-radius:var(--r-sm);margin:12px 0}.policy-preview strong{display:block;margin-bottom:5px}.policy-preview p{color:var(--muted)}.arch-intro{font-size:12px;color:var(--muted);margin-bottom:17px}.arch{display:grid;gap:8px}.layer{display:grid;grid-template-columns:32px 130px 1fr;gap:13px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;text-align:left;min-width:0;width:100%}.layer[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent)}.layer .layer-num{font:600 22px var(--font-num);color:var(--accent)}.layer strong{font-size:13px;display:block}.layer small{font-size:11px;color:var(--muted)}.layer-desc{font-size:11px;color:var(--muted)}.arch-detail{padding:16px 0;border-bottom:1px solid var(--line);font-size:12px;min-height:99px}.arch-detail h2{font-size:14px;margin-bottom:7px}.arch-detail p{color:var(--muted)}.governance{display:flex;gap:7px;align-items:center;margin-top:13px;font-size:12px;color:var(--accent);flex-wrap:wrap}.history{padding:0;list-style:none;margin:0}.history li{display:grid;grid-template-columns:40px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.history time{font:500 11px var(--font-num);color:var(--muted);padding-top:3px}.history h3{font-size:12px}.history p{font-size:11px;color:var(--muted);margin-top:4px}.guide{padding:0 2px;align-self:start;min-width:0}.guide h2{font-size:20px;font-weight:700;line-height:1.4;margin-bottom:7px}.guide .subtitle{font-size:12px;color:var(--muted)}.disclaimer{font-size:11px;line-height:1.7;color:var(--warning);background:var(--warning-soft);padding:10px 12px;border-radius:var(--r-sm);margin:15px 0}.steps{list-style:none;padding:0;margin:16px 0}.steps li{margin:3px 0}.steps button{display:flex;align-items:flex-start;gap:9px;min-height:43px;width:100%;text-align:left;border:0;background:none;border-radius:var(--r-sm);padding:7px 9px;font-size:12px}.steps button[aria-current=step]{background:var(--accent-soft)}.step-number{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#E0E7F0;color:var(--muted);font:600 11px var(--font-num);flex:none;margin-top:1px}.steps button[aria-current=step] .step-number{background:var(--accent);color:#fff}.steps strong{font-size:12px;font-weight:700;display:block;line-height:1.5}.steps small{font-size:11px;color:var(--muted);display:block;line-height:1.5}.now{padding:12px;border-radius:var(--r-sm);background:var(--surface);font-size:12px;line-height:1.8;min-height:98px;margin:14px 0}.now b{display:block;margin-bottom:3px}.guide-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.guide-controls .wide{grid-column:1/-1}.guide .kbd{font-size:11px;color:var(--muted);margin-top:13px;text-align:center}.mobile-controls{display:none}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);opacity:0;pointer-events:none;background:var(--ink);color:var(--surface);border-radius:var(--r-sm);padding:12px 18px;max-width:min(90vw,620px);font-size:12px;z-index:100;transition:transform 180ms var(--ease-out),opacity 180ms var(--ease-out);box-shadow:0 8px 24px rgba(5,17,34,.2)}.toast.visible{opacity:1;transform:translate(-50%,0)}.loading-line{height:3px;overflow:hidden;background:var(--accent-soft);margin:14px 0;border-radius:4px}.loading-line span{display:block;width:45%;height:100%;background:var(--accent)}.footer-note{font-size:11px;color:var(--muted);margin-top:20px}.decision-details{font-size:11px;margin:10px 0;color:var(--muted)}.decision-details summary{cursor:pointer;color:var(--accent);min-height:35px;display:flex;align-items:center}.decision-details ul{padding-left:18px;margin:5px 0}.page-actions{margin-top:17px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.keyboard *{transition:none!important;animation:none!important}.preview-dialog{max-width:600px;width:calc(100vw - 32px);padding:22px;border:1px solid var(--line);border-radius:var(--r-md);color:var(--ink);font-family:var(--font-ui)}.preview-dialog::backdrop{background:rgba(5,17,34,.4)}.preview-dialog h2{font-size:18px}.preview-dialog textarea{width:100%;height:220px;margin:14px 0;border:1px solid var(--line);border-radius:var(--r-sm);padding:12px;font-size:12px;background:var(--soft)}
+@media(hover:hover) and (pointer:fine){.btn:not(:disabled):hover{background:var(--accent-soft)}.btn.primary:not(:disabled):hover{background:var(--accent);border-color:var(--accent)}.nav button:not([aria-current]):hover,.steps button:not([aria-current]):hover{background:#E2EAF3}.layer:hover{border-color:var(--accent)}}
+@media(min-width:1500px){.app-shell{height:760px}.content{padding:28px 32px}.appbar{padding:0 32px}}
+@media(max-width:1050px){.stage{grid-template-columns:minmax(0,1fr) 220px;gap:16px;padding:18px 14px}.app-shell{grid-template-columns:115px minmax(0,1fr)}.brand{font-size:15px}.nav button{font-size:11px;gap:6px}.content{padding:20px 18px}.appbar{padding:0 18px}.role-strip{flex-wrap:wrap;justify-content:flex-start;gap:9px}.role-arrow{display:none}.layer{grid-template-columns:26px 110px 1fr;padding:11px}}
+@media(max-width:800px){.stage{display:block;padding:0;min-height:100dvh}.device{border:0;border-radius:0;box-shadow:none}.chrome{height:31px;padding:0 16px}.chrome .chrome-left{display:none}.chrome-title{font-size:11px}.app-shell{display:flex;flex-direction:column;height:auto;min-height:calc(100dvh - 31px)}.sidebar{display:block;padding:13px 16px 0;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:19px;margin:0 0 12px}.brand-small,.side-foot{display:none}.nav{display:flex;gap:3px;overflow:auto;padding-bottom:11px;scrollbar-width:none}.nav button{flex:none;width:auto;font-size:11px;padding:8px 10px;min-height:40px;gap:6px}.nav button .icon{width:15px;height:15px}.workspace{flex:1}.appbar{height:45px;padding:0 18px}.operator{font-size:11px}.content{padding:20px 18px 104px;overflow:visible}.page-head{margin-bottom:15px}.page-head h1{font-size:24px}.page-head .tag{font-size:11px;padding:3px 6px}.page-head p{font-size:11px}.empty{flex-wrap:wrap;padding:18px 0;gap:12px}.empty .btn{margin:4px 0 0;width:100%}.machines{gap:7px}.machine{padding:10px}.machine-title{display:block}.machine-title .tag{margin-top:6px;font-size:11px}.machine-title strong{font-size:13px}.machine p{font-size:11px}.machine-line{font-size:11px}.event-row{grid-template-columns:29px 1fr;gap:9px;padding:12px}.event-row>.tag{grid-column:2;justify-self:start}.event-row h3{font-size:12px}.role{font-size:11px}.role-strip{gap:9px}.plan-table{display:none}.mobile-plan{display:block;border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;margin:10px 0}.mobile-plan.selected{background:var(--accent-soft);border-color:var(--accent)}.mobile-plan .plan-top{display:flex;justify-content:space-between;align-items:center;gap:6px}.mobile-plan strong{font-size:12px}.mobile-plan p{font-size:11px;color:var(--muted);margin:7px 0}.plan-metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;color:var(--muted)}.plan-metrics b{color:var(--ink);font-family:var(--font-num);margin-left:4px}.layer{grid-template-columns:24px 1fr;padding:13px;gap:9px}.layer-desc{grid-column:2}.layer .layer-num{font-size:19px}.arch-detail{min-height:0}.guide{display:none}.mobile-controls{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:80;gap:12px;align-items:center;justify-content:space-between;background:var(--surface);border-top:1px solid var(--line);padding:11px 16px max(11px,env(safe-area-inset-bottom));font-size:11px;box-shadow:0 -4px 20px rgba(5,17,34,.04)}.mobile-controls b{display:block;font-size:12px;margin-bottom:2px}.mobile-controls .btn{font-size:11px;min-height:42px;flex:none}.mobile-controls .btn.prev{padding:10px;width:36px}.toast{bottom:82px}.footer-note{font-size:11px}.policy-form{grid-template-columns:1fr;gap:12px}.policy-list .policy-meta{font-size:11px}.gantt{padding:11px}.gantt-axis,.gantt-row{grid-template-columns:43px 1fr;gap:6px}.ticks{font-size:9px}.bar{font-size:9px}.btn{min-height:44px}.vt-comment-pill{bottom:86px!important}.vt-comment-list{bottom:132px!important;max-width:calc(100vw - 32px)}.vt-comment-popup{max-width:calc(100vw - 16px)}}
+@media(prefers-reduced-motion:reduce){.btn{transition:none}.btn:active:not(:disabled){transform:none}.toast{transform:translate(-50%,0);transition:opacity 120ms var(--ease-out)}}
+</style><style id="manager-hci-styles">
+.stage{grid-template-columns:minmax(0,1fr) 320px;gap:20px}.assistant{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:18px;display:flex;flex-direction:column;gap:12px}.assistant header{display:flex;align-items:center;justify-content:space-between;gap:8px}.assistant h2{font-size:18px;margin:0}.assistant-context{font-size:12px;color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--line)}.chat-messages{height:344px;overflow:auto;scrollbar-width:thin}.chat-empty{padding:30px 0}.chat-empty strong{font-size:15px}.chat-empty p{font-size:13px;color:var(--muted);margin-top:10px}.chat-message{font-size:13px;padding:12px 0;border-bottom:1px solid var(--line)}.chat-message strong{display:block;font-size:12px;margin-bottom:5px;color:var(--accent)}.chat-message.user p{background:var(--soft);padding:10px;border-radius:var(--r-sm)}.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px}.chat-suggestions .btn{padding:7px 9px;min-height:36px;font-weight:500;font-size:12px}.assistant label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}.assistant textarea{width:100%;padding:10px;border:1px solid #B6C4D3;border-radius:var(--r-sm);font-size:16px;resize:vertical;color:var(--ink);background:var(--surface)}.chat-send{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px}.chat-send span,.assistant-foot{font-size:11px;color:var(--muted)}.demo-guide{margin-top:18px;padding:14px 0;border-top:1px solid var(--line)}.demo-guide>summary{font-size:13px;font-weight:700;cursor:pointer;min-height:36px}.demo-guide h2{margin-top:12px}.manager-brief{padding:18px 0;margin:0 0 18px;border-top:2px solid var(--accent);border-bottom:1px solid var(--line)}.manager-brief h2{font-size:19px;line-height:1.5}.manager-brief>p{font-size:13px;color:var(--muted);margin-top:6px}.manager-brief dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0}.manager-brief dt{font-size:12px;color:var(--muted)}.manager-brief dd{font-size:13px;font-weight:700;margin:5px 0 0}.brief-bottom{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}.brief-bottom span{font-size:11px;color:var(--muted)}.parallel-task{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);margin-bottom:20px}.parallel-task strong{font-size:13px}.parallel-task p{font-size:12px;color:var(--muted);margin-top:4px}.whatif-confirm{background:var(--soft);padding:12px;margin:12px 0;border-radius:var(--r-sm)}.whatif-confirm h3{font-size:14px}.whatif-confirm dl{font-size:12px;margin:8px 0}.whatif-confirm dl>div{display:grid;grid-template-columns:62px 1fr;gap:8px;margin:6px 0}.whatif-confirm dd{margin:0}.whatif-confirm p{font-size:12px;margin-bottom:10px}
+@media(max-width:1050px){.stage{grid-template-columns:minmax(0,1fr) 290px;gap:14px;padding:18px 14px}.content{padding:18px}.app-shell{grid-template-columns:108px minmax(0,1fr)}.assistant{padding:14px}.manager-brief dl{grid-template-columns:1fr;gap:8px}.manager-brief dl>div{display:grid;grid-template-columns:92px 1fr;gap:8px}.manager-brief dd{margin:0}}
+@media(max-width:800px){.stage{display:block;padding:0}.guide{display:block!important;padding:0 18px 100px}.assistant{border-radius:var(--r-sm)}.chat-messages{height:280px}.content{padding-bottom:30px}.parallel-task{display:block}.parallel-task .actions{margin-top:10px}.manager-brief h2{font-size:18px}.manager-brief dl{grid-template-columns:1fr}.demo-guide{display:none}.app-shell{min-height:0}.assistant header{scroll-margin-top:12px}}
+.overview-context{font-size:12px;color:var(--muted);line-height:1.7}.priority-case{padding:16px 0 20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.case-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.case-title h2{font-size:18px;font-weight:700}.priority-case p{font-size:13px;color:var(--muted);margin:8px 0}.priority-case .case-impact{color:var(--ink);font-weight:500}.priority-case .actions{margin-top:16px}.work-list{list-style:none;padding:0;margin:0}.work-list li{display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}.work-list li>span{color:var(--muted)}@media(max-width:800px){.case-title{display:block}.case-title .tag{margin-top:8px}.work-list li{grid-template-columns:1fr auto;gap:5px}.work-list li>span{grid-column:1}.work-list .btn{grid-column:2;grid-row:1 / span 2}.priority-case .actions .btn.primary{width:100%}}
+.preview-options{margin:12px 0 16px}.preview-options [aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}.impact-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.impact-title h3{font-size:14px;font-weight:700}.impact-title span{font-size:12px;color:var(--muted)}.impact-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}.impact-table th,.impact-table td{text-align:left;vertical-align:top;padding:10px 7px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.impact-table thead{background:var(--soft);color:var(--muted)}.impact-table th{font-weight:500}.impact-table tbody th{font-family:var(--font-num);font-weight:600}.impact-preview{margin:24px 0}.impact-preview .notice{margin-top:16px}@media(max-width:800px){.impact-table thead{display:none}.impact-table,.impact-table tbody,.impact-table tr,.impact-table th,.impact-table td{display:block;width:100%}.impact-table tr{padding:12px 0;border-bottom:1px solid var(--line)}.impact-table th,.impact-table td{border:0;padding:3px 0}.impact-table td:before{content:attr(data-label);display:inline-block;width:76px;color:var(--muted)}.impact-title{display:block}.preview-options{gap:6px}.preview-options .btn{padding:8px 10px}.impact-table tbody th{margin-bottom:4px}}
+.report-intro{padding:14px 0 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.report-intro h2{font-size:18px;font-weight:700}.report-intro p,.report-section p,.report-section li{font-size:13px;line-height:1.8;color:var(--muted)}.report-intro p{margin-top:7px}.report-actions{margin:16px 0}.report-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}.report-meta dt{font-size:12px;color:var(--muted)}.report-meta dd{font-size:13px;margin:5px 0 0;overflow-wrap:anywhere}.report-section{margin:24px 0;padding-top:16px;border-top:1px solid var(--line)}.report-section h2{font-size:15px;font-weight:700;margin-bottom:10px}.report-section ul,.report-section ol{padding-left:20px}.report-section li{margin:6px 0}.report-section p+p{margin-top:8px}@media(max-width:800px){.report-meta{grid-template-columns:1fr;gap:12px}.report-actions .btn.primary{width:100%}.report-section{margin:20px 0}.report-intro h2{font-size:18px}}
+</style>
+</head><body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="i-event" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5M8 16h8"/></symbol><symbol id="i-factory" viewBox="0 0 24 24"><path d="M3 21V10l6 3V7l6 4V3h5v18H3Z"/><path d="M6 17h2m4 0h2m3 0h1"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8l10-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z"/><path d="M12 9v5m0 3v1"/></symbol><symbol id="i-tool" viewBox="0 0 24 24"><path d="M14 5a6 6 0 0 0-7 7l-4 4a3 3 0 0 0 4 4l4-4a6 6 0 0 0 8-7l-4 3-3-3 2-4Z"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol></svg>
+<a class="sr-only" href="#main-content">跳到主要內容</a>
+<main class="stage" id="prototype">
+ <section class="device" aria-label="FactoryMind 操作畫面">
+  <div class="chrome"><div class="chrome-left" aria-hidden="true"><i></i><i></i><i></i></div><div class="chrome-title"><svg class="icon"><use href="#i-lock"/></svg>FactoryMind · 虛擬射出工廠</div><span>互動原型／合成情境</span></div>
+  <div class="app-shell">
+   <aside class="sidebar"><div class="brand">FactoryMind<span style="color:var(--accent)">.</span></div><div class="brand-small">生產營運事件治理</div>
+    <nav class="nav" aria-label="主要功能">
+     <button data-page="overview" aria-current="page"><svg class="icon"><use href="#i-factory"/></svg>營運總覽</button>
+     <button data-page="events"><svg class="icon"><use href="#i-event"/></svg>事件工作台</button>
+     <button data-action="focus-chat"><svg class="icon"><use href="#i-event"/></svg>AI 問答</button><button data-page="schedule"><svg class="icon"><use href="#i-factory"/></svg>工廠排程</button>
+     <button data-page="policy"><svg class="icon"><use href="#i-shield"/></svg>企業政策</button>
+     <button data-page="architecture"><svg class="icon"><use href="#i-layers"/></svg>系統架構</button>
+     <button data-page="history"><svg class="icon"><use href="#i-clock"/></svg>決策紀錄</button>
+    </nav><div class="side-foot"><strong>虛擬工廠 · 展示環境</strong>尚未連接實廠或 AI 服務</div>
+   </aside>
+   <div class="workspace"><header class="appbar"><div class="breadcrumb"><strong id="page-name">事件工作台</strong><span class="small">／射出一廠</span></div><div class="operator"><span class="avatar" aria-hidden="true">庭</span>展示操作者</div></header><div class="content" id="main-content" tabindex="-1"></div></div>
+  </div>
+ </section>
+ <aside class="guide" aria-label="情境導覽控制台">
+  <section id="assistant" class="assistant" aria-label="AI 決策問答"><header><h2>與 AI 討論決策</h2><span class="tag neutral">腳本示範</span></header><p class="assistant-context" id="chat-context"></p><div id="chat-messages" class="chat-messages" role="log" aria-label="對話紀錄" aria-live="polite"></div><div class="chat-suggestions"><button class="btn" data-question="目前有什麼影響？">目前影響</button><button class="btn" data-question="為什麼推薦這個方案？">推薦理由</button><button class="btn" data-question="如果下週策略客戶訂單增加30%，會怎樣？">需求增加 30%</button></div><form id="chat-form"><label for="chat-input">你的問題或假設</label><textarea id="chat-input" rows="2" maxlength="1000" placeholder="例如：為什麼不選交期最短的方案？"></textarea><div class="chat-send"><span>只討論與推演，不直接執行</span><button class="btn primary" type="submit">送出問題</button></div></form><p class="assistant-foot">未連接真實 AI／排程引擎。預設回覆只演示互動；本次對話重開頁即重設。</p></section><details class="demo-guide"><summary>示範流程與架構說明</summary><h2>FactoryMind 操作原型</h2><p class="subtitle">停機與已接急單，如何一起處理？</p>
+  <p class="disclaimer">所有訂單、延誤、費用與門檻均為合成情境。預設方案用來展示流程，不是工廠模擬引擎的實測結果。可調整的五筆既有工單均未開工、未鎖定。</p>
+  <ol class="steps" id="steps"></ol><div class="now" id="now" aria-live="polite"></div>
+  <div class="guide-controls"><button class="btn" id="previous">上一步</button><button class="btn primary" id="next">下一步</button><button class="btn wide" id="trigger">觸發：停機＋已接急單</button><button class="btn" id="restart">重新開始</button><button class="btn" id="architecture-shortcut">查看架構</button></div>
+  <p class="kbd">← → 預覽步驟 · R 重播<br>選取頁面文字，可留下評論</p></details>
+ </aside>
+</main>
+<nav class="mobile-controls" aria-label="手機情境導覽"><button class="btn prev" id="mobile-prev" aria-label="上一步">←</button><div><b id="mobile-title"></b><span id="mobile-subtitle"></span></div><button class="btn primary" id="mobile-next">下一步</button></nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="comment-export" class="preview-dialog"><h2>評論匯出預覽</h2><p class="small">確認內容後複製，貼回對話讓我修改。</p><textarea id="comment-export-text" readonly aria-label="評論摘要"></textarea><div class="actions"><button class="btn primary" id="copy-confirm">確認並複製</button><button class="btn" id="copy-cancel">返回</button></div><p id="copy-state" class="small" role="status"></p></dialog>
+
+<script id="prototype-logic">
+function createState(){return {stage:0,events:[],machineAvailable:true,repairEta:null,appliedPlan:null,repairReported:false,repairVerified:false,closed:false,deliveryVerified:false,closureReport:null,policyVersion:1,assessmentVersion:null,stateRevision:1,assessmentRevision:null,policy:{strategic:5,total:5,changed:0,cost:0},history:[]};}
+function receiveEvents(s){if(s.stage>0)return false;s.events=[{id:'EV-101',type:'machine',status:'open'},{id:'EV-102',type:'rush',accepted:true,status:'open'}];s.stage=1;s.machineAvailable=false;s.history.push({action:'接收停機與已接急單',detail:'共用機台及模具，納入共同評估；復機時間未知。'});return true;}
+function rankPlans(plans,policy){
+ const keys=['strategic','total','changed','cost'];
+ const rejected=plans.filter(p=>!p.authorized || p.violations.length || keys.some(k=>!Number.isFinite(p[k])));
+ let finalists=plans.filter(p=>!rejected.includes(p));const stages=[];
+ for(const key of keys){if(!Number.isFinite(policy[key]) || policy[key]<0)throw new Error('政策門檻無效');if(!finalists.length)break;
+  const best=Math.min(...finalists.map(p=>p[key]));finalists=finalists.filter(p=>p[key]<=best+policy[key]);stages.push({key,best,tolerance:policy[key],ids:finalists.map(p=>p.id)});
+ }
+ return {selected:finalists.slice().sort((a,b)=>a.id.localeCompare(b.id))[0]||null,finalists,rejected,stages};
+}
+function scenarioPlans(){return [
+ {id:'P-A',name:'局部轉機',scope:'局部',strategic:40,total:100,changed:2,cost:1200,authorized:true,violations:[],description:'轉移 M02 工單並插入急單，僅改動相關工作；策略急單仍會延誤。'},
+ {id:'P-B',name:'擴大重排・交期最短',scope:'擴大',strategic:0,total:30,changed:5,cost:2800,authorized:true,violations:[],description:'急單準時，但需要改動 5 筆既有工單。'},
+ {id:'P-C',name:'擴大重排・少改工單',scope:'擴大',strategic:3,total:33,changed:3,cost:2100,authorized:true,violations:[],description:'交期差異落在 5 分鐘展示門檻內，只改動 3 筆既有工單。'},
+ {id:'P-X',name:'優先急單・超出底線',scope:'擴大',strategic:0,total:60,changed:4,cost:900,authorized:true,violations:['一般訂單 J-2406 新增延誤 60 分鐘，超出 30 分鐘展示上限'],description:'看似保住急單，但突破一般訂單底線，不能選用。'}
+ ];}
+function evaluate(s,expanded){if(s.stage<1||s.appliedPlan)return false;s.plans=scenarioPlans().filter(p=>expanded||p.id==='P-A');s.ranking=rankPlans(s.plans,s.policy);s.selected=s.ranking.selected;s.assessmentVersion=s.policyVersion;s.assessmentRevision=s.stateRevision;s.stage=expanded?3:2;s.history.push({action:expanded?'擴大搜尋與政策比較':'完成局部方案評估',detail:expanded?'排除違規候選；依核可門檻逐項比較。':'局部方案合規，但策略客戶仍延誤 40 分鐘。'});return true;}
+function applyPlan(s){if(s.appliedPlan)return {ok:false,reason:'此方案已套用，禁止重複執行'};if(s.stage<2||!s.selected)return {ok:false,reason:'尚無完成評估的方案'};if(s.assessmentVersion!==s.policyVersion)return {ok:false,reason:'政策已更新，請重新評估'};if(s.assessmentRevision!==s.stateRevision)return {ok:false,reason:'設備狀態已更新，請重新評估'};if(!s.selected.authorized||s.selected.violations.length)return {ok:false,reason:'方案未通過授權或底線檢查'};s.appliedPlan=s.selected.id;s.stage=s.repairReported?5:4;s.events[1].status='handled';s.history.push({action:'虛擬排程已套用並核對',detail:s.selected.id+'；生產調整完成，設備維修獨立追蹤。'});return {ok:true};}
+function reportRepair(s){if(!s.events.length||s.repairReported)return {ok:false,reason:'尚無設備事件，或回報已存在'};s.repairReported=true;if(s.appliedPlan)s.stage=5;s.history.push({action:'維修人員回報完成',detail:'回報已收到，設備仍需復機確認；不能直接結案。'});return {ok:true};}
+function verifyRepair(s){if(!s.repairReported||s.repairVerified)return {ok:false,reason:'需先有維修完成回報，且不可重複確認'};s.repairVerified=true;s.machineAvailable=true;s.stateRevision++;s.history.push({action:'復機狀態已確認',detail:'展示操作者確認 M02 可用；不自動改動已套用排程。'});return {ok:true};}
+function closeEvent(s){if(s.closed)return {ok:false,reason:'事件已結案'};if(!s.appliedPlan||!s.repairReported||!s.repairVerified)return {ok:false,reason:'尚有必要工作未完成：生產調整、維修回報或復機確認'};s.closed=true;s.stage=6;s.events[0].status='handled';s.history.push({action:'設備事件已處理',detail:'必要動作與回報已完成；訂單實際交付及效益仍另行追蹤。'});s.closureReport=JSON.parse(JSON.stringify({id:'CR-WK-201',workId:'WK-201',closedAt:new Date().toISOString(),actor:'展示操作者（非正式核准身分）',events:s.events,plan:s.selected,policy:s.policy,policyVersion:s.assessmentVersion,assessmentRevision:s.assessmentRevision,closureRevision:s.stateRevision,ranking:s.ranking.stages,rejected:s.ranking.rejected.map(p=>({id:p.id,reasons:p.violations.length?p.violations:['未通過授權或指標檢查']})),changes:planChanges(s.appliedPlan),history:s.history,repairReported:s.repairReported,repairVerified:s.repairVerified,deliveryVerified:s.deliveryVerified}));return {ok:true};}
+function getClosureReport(s){return s.closed&&s.closureReport?JSON.parse(JSON.stringify(s.closureReport)):null;}
+function updatePolicy(s,strategic,total){if(![strategic,total].every(n=>Number.isInteger(n)&&n>=0&&n<=30))return {ok:false,reason:'請輸入 0 至 30 的整數分鐘'};s.policy={strategic,total,changed:0,cost:0};s.policyVersion++;s.history.push({action:'展示政策版本更新',detail:'近似同等門檻：策略客戶 '+strategic+' 分鐘、全部訂單 '+total+' 分鐘；舊評估失效。'});return {ok:true};}
+function scheduleRows(plan){
+ if(plan==='P-B')return [[['J-2408',0,32],['J-2401',36,20],['J-2403',60,25]],[],[['J-2402',0,20],['J-2404',24,20],['J-2406',48,20]]];
+ if(plan==='P-C')return [[['J-2401',0,20],['J-2403',24,25],['J-2402',53,20]],[],[['J-2404',0,20],['J-2408',24,32],['J-2406',60,20]]];
+ if(plan==='P-A')return [[['J-2401',0,20],['J-2402',24,20],['J-2403',48,25]],[],[['J-2404',0,20],['J-2408',24,32],['J-2406',60,20]]];
+ return [[['J-2401',0,20],['J-2402',24,20]],[['J-2403',0,25]],[['J-2404',0,20],['J-2406',24,20]]];
+}
+function planChanges(plan){
+ if(!['P-A','P-B','P-C'].includes(plan))return null;
+ const flatten=rows=>rows.flatMap((bars,i)=>{
+ const existing=bars.filter(([id])=>id!=='J-2408').map(([id])=>id);
+ return bars.map(([id,start,duration])=>({id,machine:'M0'+(i+1),start,duration,previous:existing.includes(id)?existing.slice(0,existing.indexOf(id)).join(','):''}));
+ });
+ const before=flatten(scheduleRows(null)),after=flatten(scheduleRows(plan));
+ return after.map(a=>{const b=before.find(r=>r.id===a.id);return {id:a.id,before:b||null,after:a,isNew:!b,changed:!b||a.machine!==b.machine||a.start!==b.start||a.previous!==b.previous};});
+}
+function answerQuestion(s,question){
+ const q=String(question).trim();
+ if(!q||q.length>1000)return {kind:'invalid',text:'請輸入 1 至 1,000 字的問題。'};
+ if(/增加|減少/.test(q)){
+  const match=q.match(/增加\s*(\d+(?:\.\d+)?)\s*[%％]/),period=q.includes('下週')?'下週':null;
+  if(!match||!period||!q.includes('策略客戶')||Number(match[1])>100||Number(match[1])<=0)return {kind:'clarification',text:'先確認三件事：哪些客戶、哪個時間範圍、增加多少？此原型支援「下週策略客戶訂單增加 1–100%」示範，其他條件不擅自推定。'};
+  return {kind:'whatif',text:'我理解你要在副本中探索需求增加的影響。請先確認下列假設；不更改目前工廠、有效政策或已接訂單。',assumptions:{period,scope:'策略客戶全部未開工訂單（展示範圍）',percent:Number(match[1]),policyVersion:s.policyVersion,stateRevision:s.stateRevision}};
+ }
+ if(/為什麼|原因|推薦|選案|怎麼選/.test(q)){
+  if(!s.selected)return {kind:'explanation',text:'目前還沒有完成方案比較。先開始共同評估，我才能引用本次候選的理由；不會用預設推薦冒充已完成分析。'};
+  const stale=s.assessmentVersion!==s.policyVersion||s.assessmentRevision!==s.stateRevision;
+  return {kind:'explanation',text:(stale?'提醒：這份評估已過期，不能套用。':'')+'本次展示選案 '+s.selected.id+'：策略客戶預計延誤 '+s.selected.strategic+' 分鐘，全部訂單總延誤 '+s.selected.total+' 分鐘，改動 '+s.selected.changed+' 筆既有工單，情境成本 '+s.selected.cost+' 元。'+(s.selected.id==='P-C'?'P-B 比 P-C 少延誤 3 分鐘，但會多改 2 筆工單；差異在目前政策門檻內，因此優先少改工單。':'依目前政策逐項比較合規候選。')+'底線違規候選已先排除。證據：本次候選表、政策 v'+s.policyVersion+'、工廠快照 v'+s.stateRevision+'。數字是合成示範，未由模擬引擎計算。'};
+ }
+ if(/維修|復機|機台|設備|進度|影響|現在/.test(q))return {kind:'status',text:s.stage===0?'展示工廠尚未收到事件。觸發情境後，可以查看停機與急單的影響。':'M02 '+(s.repairVerified?'已確認復機':s.repairReported?'維修已回報，尚未確認復機':'不可用，復機時間未知')+'；策略急單 J-2408 '+(s.appliedPlan?'生產調整已完成，實際交付仍待追蹤':'已接單，尚待安排')+'。'+(!s.repairVerified?'維修人員回報、復機確認與排程分析並行。':'復機前的評估須重新核對。')};
+ if(/忽略|突破|放寬|直接套用|直接執行|更改政策/.test(q))return {kind:'boundary',text:'聊天不會改有效政策、授權或排程。底線不能由對話放寬；政策修改需到企業政策預覽確認，實際套用需使用工作台的明確操作。'};
+ return {kind:'clarification',text:'這個原型沒有連接真實 AI，無法可靠理解所有問題。可示範追問選案理由、維修狀態，或輸入「下週策略客戶訂單增加 30%」體驗假設確認。一般問題會保留，不會自行執行或編造結果。'};
+}
+function runWhatIf(s,draft){if(!draft||draft.period!=='下週'||draft.scope!=='策略客戶全部未開工訂單（展示範圍）'||!Number.isFinite(draft.percent)||draft.percent<=0||draft.percent>100)return {ok:false,text:'缺少有效假設，請先重新提問並確認。'};if(draft.policyVersion!==s.policyVersion||draft.stateRevision!==s.stateRevision)return {ok:false,text:'政策或工廠狀態已變更，請重新確認假設。'};return {ok:true,text:'假設已確認：下週策略客戶需求增加 '+draft.percent+'%。這裡只演示副本推演的回覆格式，尚未計算產能使用率、逾期工單數與成本。正式推演須檢查相容機台、模具、物料與工時，並引用工具結果。原工廠與有效政策保持不變。'};}
+const prototypeModel={createState,receiveEvents,rankPlans,scenarioPlans,scheduleRows,planChanges,evaluate,applyPlan,reportRepair,verifyRepair,closeEvent,getClosureReport,updatePolicy,answerQuestion,runWhatIf};
+if(typeof module!=='undefined')module.exports=prototypeModel;
+</script>
+
+<script id="prototype-ui">
+const $=id=>document.getElementById(id);
+const icon=name=>`<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const badge=(text,tone='neutral')=>`<span class="tag ${tone}">${esc(text)}</span>`;
+let conversation=[],whatIfDraft=null;
+let state=createState(),currentPage='overview',activeLayer=0,busy=false,policyDraft=null,toastTimer=null,operationEpoch=0,inspectedPlan=null;
+const navNames={overview:'營運總覽',events:'事件工作台',schedule:'工廠排程',policy:'企業政策',architecture:'系統架構',history:'決策紀錄',report:'結案報告'};
+const stages=[
+ {name:'工廠正常運作',sub:'檢視原始排程與資源',note:'先看看工廠原本的安排。所有工單與機台狀態都是展示資料。',action:'觸發停機與急單'},
+ {name:'停機＋已接急單',sub:'相關事件共同評估',note:'M02 已確認不可用，復機時間未知；策略客戶急單已正式接單。兩事件共用資源，放在一起評估。',action:'開始共同評估'},
+ {name:'先找局部方案',sub:'策略客戶仍延誤',note:'局部轉機方案符合底線，但策略客戶仍晚 40 分鐘。依已確認政策，繼續擴大搜尋。',action:'擴大搜尋方案'},
+ {name:'依企業政策選案',sub:'先守底線，再比較偏好',note:'展示門檻內視為接近，再比較改動工單數。違反一般訂單底線的方案先被排除。',action:'套用授權內方案'},
+ {name:'生產已調整',sub:'設備維修仍待回報',note:'排程已套用並核對，但設備仍不可用。整體事件保持開啟，等待維修人員回報。',action:'回報維修完成'},
+ {name:'維修回報與復機',sub:'確認結果後才可結案',note:'維修回報不是復機證據。展示操作者先確認機台可用，再完成必要工作核對。',action:'確認復機並結案'},
+ {name:'事件已處理',sub:'保存證據，交付另行追蹤',note:'必要處理與回報已完成。預測交期不等於實際交付，後續成果仍需另外驗證。',action:'重新開始'}
+];
+function head(title,desc,tag=''){return `<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div>${tag}</div>`;}
+function roles(){const active=busy?'生產':state.stage===1?'監控':state.stage===2||state.stage===3?'排程':state.stage===4||state.stage===5?'維修':'報告';return `<div class="role-strip" aria-label="AI職責分工">${['監控','維修','生產','排程','報告'].map((r,i)=>`${i?'<span class="role-arrow" aria-hidden="true">›</span>':''}<span class="role ${r===active?'active':''}"><i class="dot"></i>${r}</span>`).join('')}</div>`;}
+function machines(){return `<div class="machines">${['M01','M02','M03'].map((m,i)=>{const down=i===1&&!state.machineAvailable;return `<div class="machine"><div class="machine-title"><strong>${m}</strong>${badge(down?'不可用':'可用',down?'danger':'success')}</div><p>${i===1?'180T 射出機':'220T 射出機'}</p><div class="machine-line"><i class="dot ${down?'stop':''}"></i>${down?'復機時間未知':i===1&&state.repairVerified?'復機已確認':'設備可用'}</div></div>`;}).join('')}</div>`;}
+function gantt(applied=!!state.appliedPlan){const down=!state.machineAvailable;const rows=scheduleRows(applied?state.appliedPlan:null);return `<div class="gantt"><div class="gantt-axis"><span>機台</span><div class="ticks"><span>10:00</span><span>12:00</span><span>14:00</span><span>16:00</span></div></div>${rows.map((bars,i)=>`<div class="gantt-row"><strong class="num">M0${i+1}</strong><div class="track">${i===1&&down&&!applied?'<span class="bar unavailable" style="left:0;width:100%">設備不可用；原工單 J-2403 待轉機</span>':bars.length?bars.map(([text,x,w])=>`<span class="bar ${text==='J-2408'?'strategic':''}" style="left:${x}%;width:${w}%">${text}</span>`).join(''):'<span class="bar" style="left:0;width:100%">'+(down?'維修／等待':'已復機・暫未安排新工作')+'</span>'}</div></div>`).join('')}</div><p class="footer-note">五筆既有展示工單均未開工、未鎖定；未模擬在製工作。時間軸為工單配置示意，不計算交期；候選表的延誤與成本是獨立合成數字。既有工單均保留；深藍為策略急單。</p>`;}
+function parallelRepair(){return `<section class="parallel-task"><div><strong>維修工作 · ${state.repairVerified?'復機已確認':state.repairReported?'等待復機確認':'等待維修回報'}</strong><p>負責：維修確認者；與生產評估同時進行。</p></div><div class="actions">${!state.repairReported?'<button class="btn" data-action="repair">回報維修完成</button>':''}${!state.repairVerified?`<button class="btn" data-action="verify" ${!state.repairReported?'disabled':''}>確認設備已復機</button>`:''}</div></section>`;}
+function managerBrief(){const stale=state.selected&&(state.assessmentVersion!==state.policyVersion||state.assessmentRevision!==state.stateRevision);const title=state.closed?'必要處理已完成，交付仍需追蹤':state.appliedPlan?'生產已調整，維修另外追蹤':stale?'資料已改變，先前方案不能套用':state.stage===3&&!state.selected?'沒有合規方案，需要主管介入':state.stage===3&&state.selected?'建議採用 '+state.selected.id+'：'+state.selected.name:state.stage===2?'局部方案仍延誤，繼續擴大比較':'停機與已接急單需要共同評估';const primary=state.appliedPlan?'':stale?['reassess','依目前狀態重新評估']:state.stage===1?['local','開始共同評估']:state.stage===2?['expand','擴大搜尋方案']:['apply','套用授權內方案'];let next=state.closed?'追蹤實際交付與成效；本原型尚無交付資料。':state.appliedPlan?state.repairVerified?'必要工作已核對，可結案。':state.repairReported?'等待維修確認者確認復機。':'等待維修人員回報結果。':stale?'重新評估目前政策與工廠狀態。':state.stage===3?state.selected?.id==='P-C'?'比 P-B 多延誤 3 分鐘，在企業門檻內；少改 2 筆工單，情境成本少 700 元。可依事先授權套用。':'依目前政策選案；只在原授權內套用，超界交主管確認。':state.stage===2?'在原授權範圍擴大搜尋；不增加執行權限。':'系統開始分析；不需要主管先填完所有資訊。';return `<section class="manager-brief"><h2>${esc(title)}</h2><p>${esc(next)}</p><dl><div><dt>現場狀態</dt><dd>M02 ${state.repairVerified?'已確認可用':'不可用，復機時間未知'}</dd></div><div><dt>接單承諾</dt><dd>策略急單 1,200 件 · 14:30</dd></div><div><dt>決策影響</dt><dd>${state.selected?'預計延誤 '+state.selected.strategic+' 分鐘／改動 '+state.selected.changed+' 筆工單':'尚未完成方案比較'}</dd></div></dl>${primary?`<button class="btn primary" data-action="${primary[0]}" ${busy||primary[0]==='apply'&&!state.selected?'disabled':''}>${busy?'播放評估中…':primary[1]} ${icon('arrow')}</button>`:''}${!busy&&state.selected&&!state.appliedPlan?'<a class="btn" href="#plan-impact">查看工單改動</a>':''}<div class="brief-bottom"><span>合成情境 · 政策 v${state.policyVersion} · 快照 v${state.stateRevision}</span><button class="btn link" data-action="focus-chat">${icon('event')} 追問或提出假設</button></div></section>`;}
+
+function eventRows(){return `<div class="events"><div class="event-row"><div class="event-icon">${icon('tool')}</div><div><h3>${state.repairVerified?'M02 復機已確認':'M02 設備不可用'}</h3><p>EV-101 · 設備狀態已確認 · ${state.repairVerified?'復機已確認':state.repairReported?'維修已回報，等待復機確認':'維修人員尚未提供復機時間'}</p></div>${badge(state.closed?'已處理':state.repairVerified?'待結案':'維修追蹤中',state.closed?'success':'warn')}</div><div class="event-row"><div class="event-icon">${icon('event')}</div><div><h3>策略客戶急單 J-2408</h3><p>EV-102 · 東和精密（示意） · 1,200 件 · 承諾 14:30</p></div>${badge(state.appliedPlan?'生產調整已完成':'已接單・待安排',state.appliedPlan?'success':'ink')}</div></div>`;}
+function planRows(){return state.plans.map(p=>{const selected=p.id===state.selected?.id,blocked=p.violations.length>0;return `<tr class="${selected?'selected':''} ${blocked?'blocked':''}"><td><strong>${p.name}</strong><span class="small num">${p.id}</span></td><td class="num">${p.strategic} 分</td><td class="num">${p.total} 分</td><td class="num">${p.changed} 筆</td><td class="num">${p.cost.toLocaleString()}</td><td>${badge(blocked?'排除':selected?'選用':'候選',blocked?'danger':selected?'ink':'neutral')}</td></tr>`;}).join('');}
+function planCards(){return state.plans.map(p=>`<div class="mobile-plan ${p.id===state.selected?.id?'selected':''}"><div class="plan-top"><strong>${p.name}</strong>${badge(p.violations.length?'已排除':p.id===state.selected?.id?'選用':'候選',p.violations.length?'danger':p.id===state.selected?.id?'ink':'neutral')}</div><p>${p.description}</p><div class="plan-metrics"><span>策略延誤<b>${p.strategic} 分</b></span><span>總延誤<b>${p.total} 分</b></span><span>改動工單<b>${p.changed} 筆</b></span><span>成本<b>${p.cost.toLocaleString()} 元</b></span></div></div>`).join('');}
+function planReason(){if(state.stage===2)return '局部方案仍使策略客戶延誤 40 分鐘。即使符合底線，仍須依政策擴大搜尋。';if(state.selected?.id==='P-C')return `P-B 與 P-C 的策略延誤差 3 分鐘，總延誤差 3 分鐘，都在目前 ${state.policy.strategic}／${state.policy.total} 分鐘門檻內；P-C 改動較少工單，因此選用。`;return '依目前已確認的展示門檻逐項比較。策略客戶延誤較少的候選優先，其餘指標只在該順位近似同等時比較。';}
+function comparison(){if(!state.selected)return `<div class="notice warn"><strong>沒有可套用的合規方案</strong>保留目前安排與設備不可用狀態。將資源衝突、延誤影響與被排除原因交給有權限的主管處理；不自動加班、外包或突破底線。</div><details class="decision-details"><summary>查看被排除原因</summary><ul>${state.plans.map(p=>`<li>${esc(p.id)}：${esc(p.violations.join('；')||'缺少有效授權或指標')}</li>`).join('')}</ul></details>`;const stale=state.assessmentVersion!==state.policyVersion||state.assessmentRevision!==state.stateRevision;return `<div class="section-head"><h2>${state.stage===2?'局部候選方案':'候選方案比較'}</h2><span class="small">預設情境數字／新台幣</span></div><table class="plan-table"><caption class="sr-only">合成候選方案的延誤、改動及成本比較</caption><thead><tr><th scope="col">方案</th><th scope="col">策略延誤</th><th scope="col">總延誤</th><th scope="col">改動工單</th><th scope="col">成本</th><th scope="col">判定</th></tr></thead><tbody>${planRows()}</tbody></table>${planCards()}<div class="reason"><strong>${stale?'政策或設備狀態已更新，評估結果過期':state.stage===2?'為什麼繼續找方案？':'為什麼選這個方案？'}</strong><p>${stale?'舊方案不能套用。請按「依目前狀態重新評估」，使用目前政策與設備狀態重做比較。':planReason()}</p></div>${state.stage>=3?`<details class="decision-details"><summary>查看被排除方案與比較證據</summary><ul><li>P-X：一般訂單新增延誤 60 分鐘，超出展示上限 30 分鐘。硬底線先排除，不參與政策排名。</li>${state.ranking.stages.map(s=>`<li>${({strategic:'策略客戶延誤',total:'全部訂單延誤',changed:'改動工單數',cost:'成本'})[s.key]}：最佳參考值 ${s.best}，門檻 ${s.tolerance}；保留 ${s.ids.join('、')}。</li>`).join('')}</ul></details>`:''}`;}
+function overviewPage(){
+ const stale=state.selected&&(state.assessmentVersion!==state.policyVersion||state.assessmentRevision!==state.stateRevision);
+ const status=state.closed?'必要處理完成':state.appliedPlan?'生產已調整':stale?'評估已過期':state.stage===3&&!state.selected?'需要主管介入':state.stage===3?'方案待檢視':state.stage===2?'等待擴大比較':'等待系統評估';
+ const next=state.closed?'追蹤交付結果；結案不代表已出貨。':state.appliedPlan?state.repairVerified?'維修與復機已核對，可確認結案。':state.repairReported?'等待維修確認者核對設備可用性。':'維修人員仍需回報；主管不用代替維修確認。':stale?'政策或設備資料已改變，需重新評估。':state.stage===3&&!state.selected?'目前沒有合規候選；由主管處理資源限制，不放寬底線。':state.stage>=2?'生管檢視工單改動與政策證據；超出授權才需主管核准。':'系統尚未評估，現在不能承諾延誤或成本。';
+ let out=head('營運總覽','射出一廠 · 2026/10/01 · 優先看風險與待辦',badge('合成情境','neutral'));
+ out+=`<p class="overview-context">目前僅展示一組停機與急單。沒有接入整廠監控或實際交付資料。</p><div class="section-head"><h2>優先關注</h2><span class="small">依目前事件狀態</span></div>`;
+ if(!state.stage)return out+`<div class="empty">${icon('shield')}<div><h2>尚未收到展示事件</h2><p>不能據此判定全廠沒有風險。載入停機與急單，查看主管如何掌握處理進度。</p></div><button class="btn primary" data-action="receive">觸發停機與急單</button></div><div class="section-head"><h2>設備狀態</h2><span class="small">3 台展示機台</span></div>${machines()}<div class="notice"><strong>主管需要介入的時機</strong>授權外、無合規方案或資料不足時介入；授權內工作交由系統與負責人處理。</div>`;
+ out+=`<section class="priority-case" aria-label="優先事件"><div class="case-title"><h2>M02 停機影響已接急單</h2>${badge(status,state.closed?'success':state.appliedPlan?'ink':'warn')}</div><p>策略客戶東和精密 · J-2408 · 1,200 件 · 承諾 14:30</p><p class="case-impact">${state.selected?'展示方案：策略急單預計延誤 '+state.selected.strategic+' 分鐘；改動 '+state.selected.changed+' 筆既有工單。':'交期影響尚未計算；故障機台不納入可用資源。'}</p><p>${next}</p><div class="actions"><button class="btn primary" data-page="events">查看影響與處理 ${icon('arrow')}</button><button class="btn" data-question="目前有什麼影響？">向 AI 追問影響</button>${state.closed?'<button class="btn" data-page="report">查看結案報告</button>':''}</div></section><div class="section-head"><h2>誰在處理，還缺什麼？</h2></div><ul class="work-list"><li><strong>生產安排</strong><span>${state.appliedPlan?'調整已套用；交付尚未驗證':state.stage>=2?'由生管檢視方案與授權':'等待系統評估，生管追蹤'}</span><button class="btn link" data-page="events">查看工作</button></li><li><strong>設備維修</strong><span>${state.repairVerified?'復機已核對':state.repairReported?'回報已收到，等待復機確認':'等待維修人員回報；復機時間未知'}</span><button class="btn link" data-page="events">查看待辦</button></li><li><strong>實際交付</strong><span>未接入交付回報，不能判定履約完成</span><span class="small">尚無資料</span></li></ul><div class="section-head"><h2>最近處理紀錄</h2><button class="btn link" data-page="history">查看全部紀錄</button></div><p class="overview-context">${esc(state.history.at(-1)?.action||'尚無紀錄')} · 僅保存本次展示</p><div class="actions page-actions"><button class="btn" data-page="schedule">查看工廠安排</button><button class="btn" data-page="policy">查看規則與授權</button></div>`;
+ return out;
+}
+
+function impactContents(id){
+ const rows=planChanges(id);if(!rows)return '<p>此方案尚無排程改動資料，不能推定可執行。</p>';
+ const location=r=>r?r.machine+' · 約 '+Math.round(r.start*3.6)+' 分後開始':'尚未排入';
+ return `<div class="impact-title"><h3>${id} 的具體改動</h3><span>${rows.filter(r=>r.changed&&!r.isNew).length} 筆既有工單變動</span></div><p class="small">對照同一份原始安排；開始時間由六小時示意軸換算，不是引擎計算結果。</p><table class="impact-table"><caption class="sr-only">原安排與預覽方案的工單差異</caption><thead><tr><th>工單</th><th>原安排</th><th>預覽安排</th><th>變動</th></tr></thead><tbody>${rows.map(r=>`<tr><th scope="row">${r.id}</th><td data-label="原安排">${location(r.before)}</td><td data-label="預覽安排">${location(r.after)}</td><td data-label="變動">${r.isNew?'急單首次排入':!r.changed?'保留原安排':r.before.machine!==r.after.machine?'轉機；時間／順序另需核對':'時間或順序調整'}</td></tr>`).join('')}</tbody></table><div class="notice"><strong>套用之前，還要確認什麼？</strong>相容機台、模具、物料與人力須由計算工具檢核；本原型沒有這些核對證據。生管需確認現場準備，維修人員獨立回報；加班、外包與中斷在製工作仍須人工核准。</div>`;
+}
+function impactPreview(){const plans=state.plans.filter(p=>['P-A','P-B','P-C'].includes(p.id));const id=plans.some(p=>p.id===inspectedPlan)?inspectedPlan:state.selected?.id||plans[0]?.id;return `<section class="impact-preview" aria-label="工單改動預覽"><div class="section-head"><h2>方案會改動哪些工作？</h2></div><p class="small">切換只看差異，不更換推薦或套用排程。推薦仍為 ${state.selected?.id||'無'}。</p><div class="actions preview-options">${plans.map(p=>`<button class="btn" data-inspect="${p.id}" aria-pressed="${id===p.id}">預覽 ${p.id} 改動</button>`).join('')}</div><div id="plan-impact" tabindex="-1" aria-live="polite">${impactContents(id)}</div></section>`;}
+
+function eventPage(){let out=head(state.stage===0?'今天的工廠':'停機與急單，共同處理',state.stage===0?'射出一廠 · 2026/10/01 · 合成情境':'共同評估工作 WK-201 · 共用機台與模具',badge(state.closed?'必要工作已完成':state.stage?'事件處理中':'正常運作',state.closed?'success':state.stage?'warn':'success'));
+ if(state.stage===0)return out+`<div class="empty">${icon('shield')}<div><h2>目前沒有待處理事件</h2><p>從停機與急單，開始體驗整段流程。</p></div><button class="btn primary" data-action="receive">觸發停機與急單 ${icon('arrow')}</button></div><div class="section-head"><h2>設備狀態</h2><span class="small">3 台展示機台</span></div>${machines()}<div class="section-head"><h2>當前生產安排</h2><button class="btn link" data-page="schedule">查看排程</button></div>${gantt()}<div class="notice"><strong>企業政策已就緒</strong>策略客戶交期優先；相近方案再比較改動工單數與成本。所有調整受底線與授權限制。</div>`;
+ out+=managerBrief()+`<details class="decision-details"><summary>事件詳情與系統分工</summary>${eventRows()}${roles()}</details>`;
+ if(busy)return out+`<div class="notice"><strong>正在播放評估步驟…</strong>讀取情境快照、評估生產影響、整理預設候選。這段播放不會呼叫真實 AI。</div><div class="loading-line" role="progressbar" aria-label="情境評估步驟播放中"><span></span></div>`;
+ if(state.stage<4)out+=parallelRepair();
+ if(state.stage===1)return out+`<div class="notice warn"><strong>復機時間未知，不把預估當成可用</strong>先將 M02 排除於可用設備，評估其他相容機台的待開工工作。已開工與鎖定資源保持原安排。</div><div class="section-head"><h2>處理影響範圍</h2><span class="small">先局部，再有界擴大</span></div>${gantt()}<div class="actions page-actions"><button class="btn" data-page="policy">查看規則與授權</button></div>`;
+ if(state.stage===2||state.stage===3)return out+comparison()+impactPreview()+`<div class="notice"><strong>套用前仍需重驗</strong>僅修改授權內尚未開工的工單。加班、外包與中斷已開工生產，交由有權限的人確認。</div><div class="actions"><button class="btn" data-page="schedule">查看排程示意</button></div>`;
+ out+=`<div class="notice success"><strong>生產調整已完成</strong>${state.appliedPlan} 已套用至展示排程並核對；${state.selected.changed} 筆既有工單受調整。交期數字仍是預測情境。</div><div class="section-head"><h2>必要人工工作</h2><span class="small">派工／回報／復機分開</span></div><div class="task"><div class="task-top"><h3>維修完成回報</h3>${badge(state.repairReported?'已回報':'等待維修人員',state.repairReported?'success':'warn')}</div><p>MR-301 · 負責：維修確認者。需要回報實際結果，不能靠倒數自動完成。</p>${!state.repairReported?'<button class="btn" data-action="repair">回報維修完成</button>':''}</div><div class="task"><div class="task-top"><h3>確認 M02 已可用</h3>${badge(state.repairVerified?'已確認':'等待確認',state.repairVerified?'success':'warn')}</div><p>設備可用性需獨立核對。維修回報後，由展示操作者模擬確認。</p>${!state.repairVerified?`<button class="btn" data-action="verify" ${!state.repairReported?'disabled':''}>確認設備已復機</button>`:''}</div><div class="actions page-actions"><button class="btn primary" data-action="close" ${!state.repairVerified||state.closed?'disabled':''}>${state.closed?'事件已結案':'確認必要工作並結案'}</button><button class="btn" data-page="history">查看決策紀錄</button>${state.closed?'<button class="btn primary" data-page="report">查看結案報告</button>':''}</div>${state.closed?'<p class="footer-note">本事件的必要處理已完成；急單最終交付、實際成本與成效仍另行追蹤。</p>':'<p class="footer-note">尚有必要工作未完成時，整體設備事件保持開啟。</p>'}`;return out;
+}
+function schedulePage(){return head('工廠排程','五筆既有工單均未開工、未鎖定；設備狀態另行呈現',badge(state.appliedPlan?'已套用展示方案':'原始安排','ink'))+machines()+`<div class="section-head"><h2>${state.appliedPlan?'調整後的展示安排':'異常處理前的展示安排'}</h2><span class="small">10:00–16:00</span></div>${gantt()}<div class="section-head"><h2>本次改動摘要</h2></div><div class="result-line"><strong>已套用方案</strong><span>${state.appliedPlan||'尚未套用'}</span></div><div class="result-line"><strong>改動既有工單</strong><span>${state.appliedPlan?state.selected.changed+' 筆':'0 筆'}</span></div><div class="result-line"><strong>策略急單預計延誤</strong><span>${state.appliedPlan?state.selected.strategic+' 分鐘':'尚未完成決策'}</span></div><div class="result-line"><strong>設備異常狀態</strong><span>${state.stage===0?'未發生':state.machineAvailable?'已確認可用':'不可用；復機時間未知'}</span></div><div class="notice"><strong>試跑不會改變當前安排</strong>只有按下套用、且核對成功後，展示排程才更新。此頁用來說明畫面行為，尚未接入原有模擬引擎。</div><button class="btn" data-page="events">返回事件工作台</button>`;}
+function policyPage(){return head('企業政策','底線用表單設定，中文補充取捨原則',badge('展示版本 v'+state.policyVersion,'ink'))+`<div class="notice"><strong>以下門檻僅為展示設定</strong>實際企業數值尚未定案。這裡的修改只影響原型方案比較，不代表發布正式政策或取得實廠授權。</div><div class="section-head"><h2>不可突破的底線與授權</h2>${icon('shield')}</div><div class="result-line"><strong>一般訂單新增延誤</strong><span>最多 30 分鐘（示意）</span></div><div class="result-line"><strong>可自動調整的工作</strong><span>授權內未開工工單</span></div><div class="result-line"><strong>設備不可用／資源鎖定</strong><span>禁止安排或占用</span></div><div class="section-head"><h2>合規方案的比較順序</h2></div><ol class="policy-list">${['策略客戶總延誤','全部訂單總延誤','改動的既有工單數','成本'].map((p,i)=>`<li><span class="order">${i+1}</span><strong>${p}</strong><span class="policy-meta">${i<2?'門檻內比較下一項':'數值較小優先'}</span></li>`).join('')}</ol><div class="section-head"><h2>近似同等門檻</h2><span class="small">0 分鐘＝嚴格比較</span></div><div class="policy-form"><div class="field"><label for="strategic-tolerance">策略客戶延誤差異（分鐘）</label><input id="strategic-tolerance" type="number" min="0" max="30" step="1" value="${state.policy.strategic}" inputmode="numeric"><small>與當前最佳值相比，不串連累積差異。</small></div><div class="field"><label for="total-tolerance">全部訂單延誤差異（分鐘）</label><input id="total-tolerance" type="number" min="0" max="30" step="1" value="${state.policy.total}" inputmode="numeric"><small>只比較通過前一順位的候選。</small></div></div><div id="policy-error" class="error" role="alert"></div><button class="btn" data-action="preview-policy">預覽中文政策</button><div id="policy-preview-area"></div><p class="footer-note">將門檻改為 0 並確認，再回工作台重新評估，可看見選案從少改工單轉為追求較低延誤。</p>`;}
+const layers=[
+ {name:'操作介面',role:'看狀態、比較、核准與回報',what:'像工廠的工作台。生管看受影響訂單，主管核准例外，維修人員回報進度。介面顯示待辦與證據，不自行決定執行權限。',flow:'人員操作 → 事件處理層'},
+ {name:'事件處理與 AI 協作',role:'管理流程，按需叫用五角色',what:'像依標準程序運作的調度中心。相關停機與急單共同評估；監控、維修、生產、排程與報告按需參與，等待必要人工工作與核對。',flow:'事件與政策 → 角色分析 → 工具請求'},
+ {name:'計算與執行工具',role:'排程試跑、檢查、套用與核對',what:'像試車場加執行人員。計算工具產生可核對數字；試跑使用副本，授權內方案才套用當前虛擬工廠。送出成功不等於執行完成。',flow:'候選方案 → 試跑結果 → 授權內套用'},
+ {name:'資料與紀錄',role:'保存工廠事實與完整決策證據',what:'像工廠帳本和案件檔案。機台、模具、物料、訂單與政策有版本；保存事件、候選、核准、操作及失敗，讓每一步可追查。',flow:'有效快照供評估 → 核對結果後更新'}
+];
+function architecturePage(){return head('四層架構，兩條守則','治理授權與決策紀錄貫穿整段流程',badge('目標設計','ink'))+`<p class="arch-intro">點選任一層，查看它的工作與資料流。這是產品的目標架構，並非四層都已完成。</p><div class="arch">${layers.map((l,i)=>`<button class="layer" data-layer="${i}" aria-pressed="${activeLayer===i}"><span class="layer-num">${i+1}</span><span><strong>${l.name}</strong><small>${['人員操作','流程與責任','工具與結果','事實與證據'][i]}</small></span><span class="layer-desc">${l.role}</span></button>`).join('')}</div><div class="arch-detail" aria-live="polite"><h2>${layers[activeLayer].name}</h2><p>${layers[activeLayer].what}</p><p style="margin-top:7px;color:var(--accent)">${layers[activeLayer].flow}</p></div><div class="governance">${icon('shield')}<strong>治理與授權</strong><span class="small">底線先檢查，偏好後比較；AI 不自行放寬。</span></div><div class="governance">${icon('clock')}<strong>決策紀錄</strong><span class="small">保存資料版本、理由、核准與結果。</span></div><div class="notice"><strong>第一版：模組分清楚，同一套後台運作</strong>較適合一人維護。若模擬需要更多運算，後續可獨立部署；代價是多一層連線失敗及維護成本。</div>`;}
+function historyPage(){return head('決策紀錄','從事件到選案與執行，保留可追查證據',badge('本次展示 '+state.history.length+' 筆','ink'))+(state.closed?'<div class="actions"><button class="btn primary" data-page="report">查看結案報告</button></div>':'')+(state.history.length?`<ol class="history">${state.history.map((h,i)=>`<li><time>${i===0?'10:08':i===1?'10:09':i<4?'10:10':i<6?'10:35':'10:36'}</time><div><h3>${esc(h.action)}</h3><p>${esc(h.detail)}</p></div></li>`).join('')}</ol><p class="footer-note">時間為敘事示意。本次流程存在瀏覽器記憶體，重新開始或重新開頁會重設，不具正式稽核保存能力。</p>`:`<div class="empty">${icon('clock')}<div><h2>還沒有事件紀錄</h2><p>先觸發停機與急單，再回來查看處理歷程。</p></div></div><button class="btn primary" data-action="receive">觸發停機與急單</button>`);}
+const reportMetrics={strategic:['策略客戶延誤','分鐘'],total:['全部訂單延誤','分鐘'],changed:['改動工單數','筆'],cost:['成本','元']};
+function closureReportText(r){
+ if(!r)return '';
+ const changes=r.changes.map(x=>x.id+'：'+(x.isNew?'急單首次排入 '+x.after.machine:x.changed?'原 '+x.before.machine+' → '+x.after.machine+'；時間或順序改動':'保留原安排')).join('\n');
+ return ['FactoryMind 事件結案報告（合成情境）',r.id+'／'+r.workId,'本機結案操作時間：'+r.closedAt,'操作者：'+r.actor,'一、事件與完成範圍','EV-101：M02設備不可用；維修回報與復機確認已完成。','EV-102：已接策略急單 J-2408，1,200件，承諾14:30；生產安排已調整。','實際交付尚未驗證；不把處理完成當成訂單完成。','二、決策依據','採用 '+r.plan.id+'：'+r.plan.name,'策略客戶延誤 '+r.plan.strategic+' 分鐘；總延誤 '+r.plan.total+' 分鐘；改動既有工單 '+r.plan.changed+' 筆；情境成本 '+r.plan.cost+' 元。','上述數字為合成預測，未由引擎計算，不是實際效益。','政策 v'+r.policyVersion+'／評估快照 v'+r.assessmentRevision+'／結案狀態 v'+r.closureRevision,...r.ranking.map(x=>'比較 '+reportMetrics[x.key][0]+'：最佳值 '+x.best+' '+reportMetrics[x.key][1]+'，門檻 '+x.tolerance+' '+reportMetrics[x.key][1]+'，保留 '+x.ids.join('、')),...r.rejected.map(x=>'排除 '+x.id+'：'+x.reasons.join('；')),'三、工單改動',changes,'四、處理紀錄',...r.history.map((h,i)=>(i+1)+'. '+h.action+'：'+h.detail),'五、後續追蹤','實際交付尚未驗證。實際成本、品質與持續運轉結果尚無資料。','六、證據限制','本報告來自本機展示狀態與操作者模擬回報，沒有真實維修單、身分核驗、工廠數據或外部核准證據。重新開頁或重播會清除本次紀錄，請先下載保留。'].join('\n');
+}
+function closureReportPage(){const r=getClosureReport(state);if(!r)return head('事件結案報告','必要工作完成後才產生固定報告')+'<div class="notice warn"><strong>尚未產生結案報告</strong>先完成生產調整、維修回報及復機核對；不能提前宣稱處理完成。</div><button class="btn" data-page="events">返回事件工作台</button>';
+ const metricNames={strategic:'策略客戶延誤',total:'全部訂單延誤',changed:'改動工單數',cost:'成本'};
+ return head('事件結案報告',r.id+' · '+r.workId+' · 結案時內容',badge('處理已完成','success'))+`<div class="report-intro"><h2>生產調整與復機已核對</h2><p>實際交付尚未驗證。這份報告記錄必要處理完成，不代表交期、成本或品質目標已達成。</p></div><div class="actions report-actions"><button class="btn primary" data-action="download-report">下載文字報告</button><button class="btn" data-page="history">查看處理歷程</button></div><dl class="report-meta"><div><dt>涵蓋事件</dt><dd>EV-101 停機／EV-102 已接急單</dd></div><div><dt>結案操作者</dt><dd>${esc(r.actor)}</dd></div><div><dt>本機操作時間</dt><dd>${esc(new Date(r.closedAt).toLocaleString('zh-TW',{hour12:false}))}</dd></div><div><dt>資料版本</dt><dd>政策 v${r.policyVersion}／評估 v${r.assessmentRevision}／結案 v${r.closureRevision}</dd></div></dl><section class="report-section"><h2>事件與完成範圍</h2><ul><li>M02 原列不可用、復機時間未知；已收到維修完成回報並確認設備可用。</li><li>策略客戶東和精密急單 J-2408，1,200 件，承諾 14:30；已完成生產安排調整。</li><li>五筆既有工單均未開工、未鎖定；本次沒有演示中斷在製工作。</li></ul></section><section class="report-section"><h2>為什麼採用 ${esc(r.plan.id)}？</h2><p>${esc(r.plan.name)}：依當時企業排序與差異門檻，先排除違規，再依序比較。</p><dl class="report-meta"><div><dt>策略急單預計延誤</dt><dd>${r.plan.strategic} 分鐘</dd></div><div><dt>全部訂單總延誤</dt><dd>${r.plan.total} 分鐘</dd></div><div><dt>改動既有工單</dt><dd>${r.plan.changed} 筆</dd></div><div><dt>情境成本</dt><dd>${r.plan.cost.toLocaleString()} 元</dd></div></dl><p class="small">以上為合成預測，沒有實測效益；不以此宣稱改善或節省成本。</p><details class="decision-details"><summary>查看當時比較與排除證據</summary><ul>${r.ranking.map(x=>`<li>${metricNames[x.key]}：最佳參考值 ${x.best}，門檻 ${x.tolerance}；保留 ${esc(x.ids.join('、'))}。</li>`).join('')}${r.rejected.map(x=>`<li>排除 ${esc(x.id)}：${esc(x.reasons.join('；'))}。</li>`).join('')}</ul></details></section><section class="report-section"><h2>具體完成哪些改動？</h2><ul>${r.changes.map(x=>`<li><strong>${esc(x.id)}</strong>：${x.isNew?'急單首次排入 '+esc(x.after.machine):!x.changed?'保留原安排':esc(x.before.machine)+' → '+esc(x.after.machine)+'；時間或順序改動'}。</li>`).join('')}</ul><p class="small">改動證據來自展示排程；不是已校準的工廠執行結果。</p></section><section class="report-section"><h2>必要工作完成核對</h2><ul><li>生產：${esc(r.plan.id)} 已套用展示排程並核對。</li><li>維修：維修人員完成回報已收到。</li><li>設備：展示操作者已模擬確認 M02 復機。</li><li>事件：必要處理完成後結案，保留 ${r.history.length} 筆流程紀錄。</li></ul><details class="decision-details"><summary>查看結案時的完整處理歷程</summary><ol>${r.history.map(h=>`<li>${esc(h.action)}：${esc(h.detail)}</li>`).join('')}</ol></details></section><section class="report-section"><h2>後續追蹤與證據限制</h2><p>實際交付尚未驗證；實際成本、品質與持續運轉结果尚無資料。</p><p>本報告僅來自合成情境與模擬回報，沒有真實維修單、身分核驗或外部核准證據。內容已固定於結案時，但重開頁或重播仍會清除本次展示，請先下載保留。</p></section><button class="btn" data-page="overview">返回營運總覽</button>`;
+}
+
+function render(){const pages={overview:overviewPage,events:eventPage,schedule:schedulePage,policy:policyPage,architecture:architecturePage,history:historyPage,report:closureReportPage};$('main-content').innerHTML=pages[currentPage]();renderChat();$('page-name').textContent=navNames[currentPage];document.querySelectorAll('.nav [data-page]').forEach(b=>{if(b.dataset.page===currentPage)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});$('steps').innerHTML=stages.map((s,i)=>`<li><button data-step="${i}" ${state.stage===i?'aria-current="step"':''} ${busy?'disabled':''}><span class="step-number">${i+1}</span><span><strong>${s.name}</strong><small>${s.sub}</small></span></button></li>`).join('');$('now').innerHTML=`<b>${state.stage+1} / ${stages.length} · ${stages[state.stage].name}</b>${stages[state.stage].note}`;$('next').textContent=busy?'播放評估中…':stages[state.stage].action;$('previous').disabled=state.stage===0||busy;$('next').disabled=busy;$('trigger').disabled=busy;$('mobile-title').textContent=stages[state.stage].name;$('mobile-subtitle').textContent=`步驟 ${state.stage+1}/${stages.length} · 合成情境`;$('mobile-next').textContent=state.stage===6?'重播':state.stage===0?'開始示範':state.stage===1?'開始評估':state.stage===2?'擴大比較':state.stage===3?'套用方案':state.stage===4?'維修回報':'確認結案';$('mobile-next').disabled=busy;$('mobile-prev').disabled=currentPage==='overview'||state.stage===0||busy;if(currentPage==='overview'&&state.stage>0){$('mobile-title').textContent='營運總覽';$('mobile-subtitle').textContent='查看待辦後再操作';$('mobile-next').textContent='查看事件';}if(currentPage==='report'){$('mobile-title').textContent='結案報告';$('mobile-subtitle').textContent='固定於結案時；可下載保留';$('mobile-prev').disabled=true;$('mobile-next').textContent='返回總覽';}}
+function navigate(page){currentPage=page;policyDraft=null;render();$('main-content').scrollTop=0;$('main-content').focus({preventScroll:true});if(innerWidth<=800)window.scrollTo(0,0);}
+function toast(text){$('toast').textContent=text;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3500);}
+async function showEvaluation(expanded){if(busy)return;busy=true;const epoch=operationEpoch;currentPage='events';render();await new Promise(r=>setTimeout(r,650));if(epoch!==operationEpoch)return;evaluate(state,expanded);busy=false;render();}
+function reset(){operationEpoch++;conversation=[];whatIfDraft=null;inspectedPlan=null;state=createState();busy=false;policyDraft=null;currentPage='overview';render();$('main-content').scrollTop=0;}
+function previewStep(n){operationEpoch++;busy=false;const policy={...state.policy},version=state.policyVersion;state=createState();state.policy=policy;state.policyVersion=version;if(n>=1)receiveEvents(state);if(n>=2)evaluate(state,false);if(n>=3)evaluate(state,true);if(n>=4)applyPlan(state);if(n>=5)reportRepair(state);if(n>=6){verifyRepair(state);closeEvent(state);}currentPage='events';render();$('main-content').scrollTop=0;}
+function next(){if(busy)return;if(currentPage==='report'){navigate('overview');return;}if(currentPage==='overview'&&state.stage>0){navigate('events');return;}if(state.stage===0){receiveEvents(state);navigate('events');}else if(state.stage===1)showEvaluation(false);else if(state.stage===2)showEvaluation(true);else if(state.stage===3){const r=applyPlan(state);if(!r.ok)toast(r.reason);navigate('events');}else if(state.stage===4){reportRepair(state);navigate('events');}else if(state.stage===5){verifyRepair(state);closeEvent(state);navigate('events');}else reset();}
+function previewPolicy(){const a=$('strategic-tolerance').value,b=$('total-tolerance').value;const strategic=Number(a),total=Number(b);if(!a.trim()||!b.trim()||![strategic,total].every(n=>Number.isInteger(n)&&n>=0&&n<=30)){policyDraft=null;$('policy-error').textContent='請填入 0 至 30 的整數分鐘；空白與負值不能發布。';$('policy-preview-area').innerHTML='';return;}$('policy-error').textContent='';policyDraft={strategic,total};$('policy-preview-area').innerHTML=`<div class="policy-preview"><strong>待確認的中文政策</strong><p>先降低策略客戶延誤，與最佳值差 ${strategic} 分鐘內視為接近；再比較全部訂單延誤，差 ${total} 分鐘內比較改動工單數，最後比較成本。所有候選先通過底線及授權。</p><div class="actions" style="margin-top:12px"><button class="btn primary" data-action="confirm-policy">確認展示政策</button><button class="btn" data-action="cancel-policy">取消</button></div></div>`;}
+document.addEventListener('click',e=>{const link=e.target.closest('a[href="#plan-impact"]');if(link){e.preventDefault();const target=$('plan-impact'),main=$('main-content');if(!target)return;if(innerWidth>800){main.scrollTop+=target.getBoundingClientRect().top-main.getBoundingClientRect().top;window.scrollTo(0,0);}else target.scrollIntoView({block:'start',behavior:'auto'});target.focus({preventScroll:true});return;}const b=e.target.closest('button');if(!b||b.disabled)return;if(e.detail>0)document.body.classList.remove('keyboard');if(b.dataset.inspect){inspectedPlan=b.dataset.inspect;$('plan-impact').innerHTML=impactContents(inspectedPlan);document.querySelectorAll('[data-inspect]').forEach(el=>el.setAttribute('aria-pressed',el.dataset.inspect===inspectedPlan));return;}if(b.dataset.question){sendQuestion(b.dataset.question);return;}if(b.dataset.page)return navigate(b.dataset.page);if(b.dataset.layer!==undefined){activeLayer=Number(b.dataset.layer);render();return;}if(b.dataset.step!==undefined){previewStep(Number(b.dataset.step));return;}const a=b.dataset.action;if(!a)return;
+ if(a==='focus-chat'){focusChat();}
+ else if(a==='confirm-whatif'){confirmWhatIf();}
+ else if(a==='cancel-whatif'){whatIfDraft=null;renderChat();}
+ else if(a==='receive'){receiveEvents(state);navigate('events');}
+ else if(a==='local')showEvaluation(false);
+ else if(a==='expand'||a==='reassess')showEvaluation(true);
+ else if(a==='apply'){const r=applyPlan(state);if(!r.ok)toast(r.reason);else toast('展示排程已套用；維修事件仍在追蹤。');render();}
+ else if(a==='download-report'){const r=getClosureReport(state);if(!r){toast('尚未完成必要工作，不能下載結案報告。');return;}const link=document.createElement('a');link.href='data:text/plain;charset=utf-8,'+encodeURIComponent(closureReportText(r));link.download='FactoryMind-CR-WK-201.txt';document.body.append(link);link.click();link.remove();toast('已送出文字檔下載；請保留本次結案內容。');}
+ else if(a==='repair'){const r=reportRepair(state);if(!r.ok)toast(r.reason);render();}
+ else if(a==='verify'){const r=verifyRepair(state);if(!r.ok)toast(r.reason);render();}
+ else if(a==='close'){const r=closeEvent(state);if(!r.ok)toast(r.reason);render();}
+ else if(a==='preview-policy')previewPolicy();
+ else if(a==='confirm-policy'&&policyDraft){const r=updatePolicy(state,policyDraft.strategic,policyDraft.total);policyDraft=null;if(!r.ok)toast(r.reason);else toast('展示政策已更新，先前評估已失效。');render();}
+ else if(a==='cancel-policy'){policyDraft=null;$('policy-preview-area').innerHTML='';}
+});
+function renderChat(){const s=state;$('chat-context').textContent=s.stage===0?'目前：射出一廠／尚無事件':`目前：WK-201 停機＋急單 · 政策 v${s.policyVersion} · 快照 v${s.stateRevision}`;
+ $('chat-messages').innerHTML=conversation.length?conversation.map(m=>`<article class="chat-message ${m.role}"><strong>${m.role==='user'?'你':'AI 決策助手 · 示範'}</strong><p>${esc(m.text)}</p></article>`).join(''):'<div class="chat-empty"><strong>從你關心的問題開始</strong><p>可以追問目前影響、比較理由，或提出需求變動的假設。回答會帶入這次事件，不會直接改工廠。</p></div>';
+ if(whatIfDraft)$('chat-messages').innerHTML+=`<section class="whatif-confirm"><h3>先確認我的理解</h3><dl><div><dt>時間</dt><dd>${esc(whatIfDraft.period)}</dd></div><div><dt>對象</dt><dd>${esc(whatIfDraft.scope)}</dd></div><div><dt>變更</dt><dd>需求增加 ${whatIfDraft.percent}%</dd></div><div><dt>使用起點</dt><dd>政策 v${whatIfDraft.policyVersion}／快照 v${whatIfDraft.stateRevision}</dd></div></dl><p>只建立副本推演示範；不執行或改政策。</p><div class="actions"><button class="btn primary" data-action="confirm-whatif">確認假設，查看推演示範</button><button class="btn" data-action="cancel-whatif">取消／重新描述</button></div></section>`;
+ const log=$('chat-messages');log.scrollTop=log.scrollHeight;}
+function sendQuestion(question){const answer=answerQuestion(state,question);if(answer.kind==='invalid'){toast(answer.text);return;}conversation.push({role:'user',text:question},{role:'assistant',text:answer.text});whatIfDraft=answer.assumptions||null;$('chat-input').value='';renderChat();}
+function confirmWhatIf(){const result=runWhatIf(state,whatIfDraft);conversation.push({role:'assistant',text:result.text});whatIfDraft=null;renderChat();}
+function focusChat(){$('assistant').scrollIntoView({block:'nearest',behavior:'instant'});$('chat-input').focus({preventScroll:true});}
+$('chat-form').addEventListener('submit',e=>{e.preventDefault();sendQuestion($('chat-input').value);});
+$('chat-input').addEventListener('keydown',e=>{if(e.isComposing)return;if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();sendQuestion(e.target.value);}});
+$('next').addEventListener('click',next);$('mobile-next').addEventListener('click',next);$('previous').addEventListener('click',()=>previewStep(Math.max(0,state.stage-1)));$('mobile-prev').addEventListener('click',()=>previewStep(Math.max(0,state.stage-1)));$('restart').addEventListener('click',reset);$('trigger').addEventListener('click',()=>previewStep(1));$('architecture-shortcut').addEventListener('click',()=>navigate('architecture'));
+document.addEventListener('input',e=>{if(e.target.id==='strategic-tolerance'||e.target.id==='total-tolerance'){policyDraft=null;$('policy-preview-area').innerHTML='';}});
+document.addEventListener('keydown',e=>{if(e.isComposing||e.target.closest('input,textarea,dialog')||$('comment-export').open||document.querySelector('#vt-comment-popup')?.style.display==='block')return;document.body.classList.add('keyboard');if(e.key==='ArrowRight'){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();previewStep(Math.max(0,state.stage-1));}else if(e.key.toLowerCase()==='r')reset();});
+render();
+</script>
+
+<style>
+  .vt-comment-trigger {
+    position: fixed; z-index: 9998;
+    background: var(--paper);
+    border: 1.5px solid var(--clay);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--clay);
+    font-family: var(--mono);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(20, 20, 19, 0.12);
+    display: none;
+    align-items: center;
+    gap: 6px;
+    transition: none;
+  }
+  .vt-comment-trigger:hover { background: var(--clay); color: var(--paper); }
+
+  .vt-comment-popup {
+    position: fixed; z-index: 9999;
+    background: var(--paper);
+    border: 1.5px solid var(--g300);
+    border-radius: 12px;
+    box-shadow: none;
+    padding: 14px 16px;
+    width: min(340px, calc(100vw - 32px));
+    display: none;
+  }
+  .vt-comment-popup .quote {
+    background: var(--g100);
+    border: 1px solid var(--g200);
+    padding: 8px 10px;
+    font-size: 12.5px;
+    color: var(--g700);
+    line-height: 1.45;
+    margin-bottom: 10px;
+    max-height: 80px;
+    overflow-y: auto;
+  }
+  .vt-comment-popup textarea {
+    width: 100%;
+    border: 1.5px solid var(--g300);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: var(--sans);
+    resize: vertical;
+    min-height: 60px;
+    color: var(--slate);
+    box-sizing: border-box;
+  }
+  .vt-comment-popup textarea:focus { outline: none; border-color: var(--clay); outline: 2px solid var(--clay); outline-offset:2px; }
+  .vt-comment-popup .actions {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 10px; font-size: 12px;
+  }
+  .vt-comment-popup .hint { color: var(--g500); font-family: var(--mono); }
+  .vt-comment-popup button.send {
+    background: var(--clay); color: var(--paper);
+    border: none; border-radius: 8px;
+    padding: 6px 14px; font-size: 12.5px;
+    font-weight: 600; cursor: pointer;
+  }
+  .vt-comment-popup button.send:hover { background: var(--clay-d); }
+  .vt-comment-popup button.cancel {
+    background: transparent; border: 1px solid var(--g300);
+    color: var(--g500); border-radius: 8px;
+    padding: 6px 12px; font-size: 12.5px;
+    cursor: pointer; margin-right: 8px;
+  }
+
+  mark.vt-comment-mark {
+    background: var(--oat);
+    padding: 0 2px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  mark.vt-comment-mark:hover { background: #d5c4a8; }
+
+  /* 右下浮動小 pill — 唯一持續顯示的管理 UI */
+  .vt-comment-pill {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 9990;
+    background: var(--paper);
+    border: 1.5px solid var(--clay);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--clay);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(20, 20, 19, 0.10);
+    display: none;
+    align-items: center;
+    gap: 6px;
+    transition: none;
+  }
+  .vt-comment-pill.is-active { display: inline-flex; }
+  .vt-comment-pill:hover { background: var(--clay); color: var(--paper); }
+  .vt-comment-pill strong { font-weight: 600; }
+
+  /* 列表 — 從 pill 上方展開 */
+  .vt-comment-list {
+    position: fixed;
+    right: 16px;
+    bottom: 60px;
+    width: min(360px, calc(100vw - 32px));
+    max-height: 60vh;
+    z-index: 9991;
+    background: var(--paper);
+    border: 1.5px solid var(--g300);
+    border-radius: 14px;
+    box-shadow: none;
+    display: none;
+    flex-direction: column;
+  }
+  .vt-comment-list.is-open { display: flex; }
+  .vt-comment-list-header {
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--g200);
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--g500);
+    font-weight: 600;
+    border-radius: 14px 14px 0 0;
+  }
+  .vt-comment-list-items {
+    overflow-y: auto;
+    flex: 1;
+  }
+  .vt-comment-item { padding: 12px 16px; border-bottom: 1px solid var(--g200); }
+  .vt-comment-item:last-child { border-bottom: none; }
+  .vt-comment-item .item-quote {
+    font-size: 12px;
+    color: var(--g500);
+    font-style: italic;
+    border: 1px solid var(--g200);
+    padding-left: 8px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .vt-comment-item .item-body { font-size: 13px; color: var(--slate); line-height: 1.5; }
+  .vt-comment-item .item-del {
+    font-size: 11px; color: var(--g500);
+    background: none; border: none;
+    cursor: pointer; margin-top: 4px;
+    padding: 0; font-family: inherit;
+  }
+  .vt-comment-item .item-del:hover { color: var(--red); }
+  .vt-comment-list-footer {
+    border-top: 1.5px solid var(--g200);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border-radius: 0 0 14px 14px;
+    background: var(--g100);
+  }
+  .vt-comment-list-footer button {
+    background: transparent;
+    border: 1.5px solid var(--g300);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--g700);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .vt-comment-list-footer button:hover { border-color: var(--slate); color: var(--slate); }
+  .vt-comment-list-footer button.copy {
+    background: var(--clay); color: var(--paper);
+    border-color: var(--clay);
+  }
+  .vt-comment-list-footer button.copy:hover { background: var(--clay-d); }
+  /* 範本若有 window.vtBuildDecisionExport、隱藏 fallback 複製按鈕 */
+  body.vt-has-existing-export .vt-comment-list-footer button.copy { display: none; }
+</style>
+
+<button class="vt-comment-trigger" id="vt-comment-trigger">留下評論</button>
+
+<div class="vt-comment-popup" id="vt-comment-popup">
+  <div class="quote" id="vt-popup-quote"></div>
+  <textarea id="vt-popup-textarea" placeholder="對這段文字的評論 / 疑問 / 補充..."></textarea>
+  <div class="actions">
+    <span class="hint">⌘ + Enter 送出 · Esc 取消</span>
+    <div>
+      <button class="cancel" id="vt-popup-cancel">取消</button>
+      <button class="send" id="vt-popup-send">送出</button>
+    </div>
+  </div>
+</div>
+
+<button class="vt-comment-pill" id="vt-comment-pill">評論 <strong id="vt-count">0</strong></button>
+
+<div class="vt-comment-list" id="vt-comment-list">
+  <div class="vt-comment-list-header">— 我的評論</div>
+  <div class="vt-comment-list-items" id="vt-comment-list-items"></div>
+  <div class="vt-comment-list-footer">
+    <button id="vt-clear-all">全部清除</button>
+    <button class="copy" id="vt-copy-fallback">預覽評論匯出</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'vt-comments-' + window.location.pathname;
+  const MAX_QUOTE_LEN = 80;
+
+  let comments=[];try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');if(Array.isArray(saved))comments=saved.filter(c=>c&&/^c-[0-9]+$/.test(c.id)&&typeof c.quote==='string'&&typeof c.body==='string').slice(0,100);}catch{}
+  let currentSelection = null;
+
+  const $ = (id) => document.getElementById(id);
+  const trigger = $('vt-comment-trigger');
+  const popup = $('vt-comment-popup');
+  const popupQuote = $('vt-popup-quote');
+  const popupTextarea = $('vt-popup-textarea');
+  const pill = $('vt-comment-pill');
+  const countEl = $('vt-count');
+  const listEl = $('vt-comment-list');
+  const listItemsEl = $('vt-comment-list-items');
+
+  // 全域 API：給範本既有複製 builder 拼接用
+  window.vtCollectComments = function () {
+    if (comments.length === 0) return '';
+    const body = comments.map(c => {
+      const q = c.quote.length > MAX_QUOTE_LEN ? c.quote.slice(0, MAX_QUOTE_LEN) + '…' : c.quote;
+      return `@評論「${q}」\n  → ${c.body}`;
+    }).join('\n\n');
+    return '\n\n---\n\n' + body;
+  };
+
+  document.addEventListener('mouseup', handleSelection);
+  document.addEventListener('touchend', handleSelection);
+
+  function handleSelection(e) {
+    if (e.target.closest('.vt-comment-popup, .vt-comment-trigger, .vt-comment-pill, .vt-comment-list')) return;
+    setTimeout(() => {
+      const sel = window.getSelection();
+      const text = sel.toString().trim();
+      if (!text || text.length < 2) { trigger.style.display = 'none'; return; }
+      const range = sel.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      currentSelection = { text, range: range.cloneRange() };
+      trigger.style.display = 'inline-flex';
+      trigger.style.top = Math.max(8, rect.top - 38) + 'px';
+      trigger.style.left = Math.max(8, Math.min(window.innerWidth-110,rect.left + rect.width / 2 - 40)) + 'px';
+    }, 10);
+  }
+
+  trigger.addEventListener('click', openPopup);
+
+  function openPopup() {
+    if (!currentSelection) return;
+    const quote = currentSelection.text.length > MAX_QUOTE_LEN
+      ? currentSelection.text.slice(0, MAX_QUOTE_LEN) + '…'
+      : currentSelection.text;
+    popupQuote.textContent = quote;
+    popupTextarea.value = '';
+    const tr = trigger.getBoundingClientRect();
+    const popupW = Math.min(340,window.innerWidth-32);
+    let left = tr.left;
+    if (left + popupW > window.innerWidth - 16) left = window.innerWidth - popupW - 16;
+    let top = tr.bottom + 6;
+    if (top + 220 > window.innerHeight) top = tr.top - 230;
+    popup.style.left = Math.max(8, left) + 'px';
+    popup.style.top = Math.max(8, top) + 'px';
+    trigger.style.display = 'none';
+    popup.style.display = 'block';
+    setTimeout(() => popupTextarea.focus(), 50);
+  }
+
+  $('vt-popup-cancel').addEventListener('click', closePopup);
+  $('vt-popup-send').addEventListener('click', saveComment);
+  popupTextarea.addEventListener('keydown', (e) => {
+    if (e.isComposing || e.keyCode === 229) return;  // IME guard
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      e.stopPropagation();
+      saveComment();
+    }
+    if (e.key === 'Escape') closePopup();
+  });
+
+  function closePopup() { popup.style.display = 'none'; currentSelection = null; }
+
+  function saveComment() {
+    const body = popupTextarea.value.trim();
+    if (!body || !currentSelection) return closePopup();
+    const id = 'c-' + Date.now();
+    const quote = currentSelection.text;
+    try {
+      const mark = document.createElement('mark');
+      mark.className = 'vt-comment-mark';
+      mark.dataset.commentId = id;
+      currentSelection.range.surroundContents(mark);
+    } catch (err) {
+      // 跨 element 選取無法 wrap、評論還是存、只是不 highlight
+    }
+    comments.push({ id, quote, body, ts: Date.now() });
+    persist(); render(); closePopup();
+    window.getSelection().removeAllRanges();
+  }
+
+  function persist() { try{localStorage.setItem(STORAGE_KEY,JSON.stringify(comments));}catch{document.getElementById('toast').textContent='瀏覽器無法保存評論；請先匯出內容。';document.getElementById('toast').classList.add('visible');} }
+
+  function render() {
+    countEl.textContent = comments.length;
+    pill.classList.toggle('is-active', comments.length > 0);
+    if (comments.length === 0) listEl.classList.remove('is-open');
+    listItemsEl.innerHTML = comments.map(c => {
+      const qs = c.quote.length > 60 ? c.quote.slice(0, 60) + '…' : c.quote;
+      return `<div class="vt-comment-item" data-id="${c.id}">
+        <div class="item-quote">「${escapeHtml(qs)}」</div>
+        <div class="item-body">${escapeHtml(c.body)}</div>
+        <button class="item-del" data-del="${c.id}">刪除</button>
+      </div>`;
+    }).join('');
+    listItemsEl.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => deleteComment(btn.dataset.del));
+    });
+  }
+
+  function deleteComment(id) {
+    comments = comments.filter(c => c.id !== id);
+    document.querySelectorAll(`mark.vt-comment-mark[data-comment-id="${id}"]`).forEach(m => {
+      const parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m); parent.normalize();
+    });
+    persist(); render();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, ch => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[ch]));
+  }
+
+  pill.addEventListener('click', () => listEl.classList.toggle('is-open'));
+
+  $('vt-clear-all').addEventListener('click', () => {
+    if (comments.length === 0) return;
+    if (!confirm('確定清除全部 ' + comments.length + ' 條評論？')) return;
+    document.querySelectorAll('mark.vt-comment-mark').forEach(m => {
+      const parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m); parent.normalize();
+    });
+    comments = []; persist(); render();
+  });
+
+  // Fallback 複製按鈕（範本無既有複製機制時）
+  $('vt-copy-fallback').addEventListener('click',()=>{
+   $('comment-export-text').value=window.vtCollectComments().replace(/^\n\n---\n\n/,'');$('copy-state').textContent='';$('comment-export').showModal();
+  });
+  $('copy-cancel').addEventListener('click',()=>$('comment-export').close());
+  $('copy-confirm').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('comment-export-text').value);$('copy-state').textContent='已複製，現在可貼回對話。';}catch{$('comment-export-text').focus();$('comment-export-text').select();$('copy-state').textContent='請使用複製快捷鍵，複製已選取的內容。';}});
+
+  // 偵測範本既有複製機制、隱藏 fallback 複製按鈕
+  setTimeout(() => {
+    if (typeof window.vtBuildDecisionExport === 'function') {
+      document.body.classList.add('vt-has-existing-export');
+    }
+  }, 100);
+
+  document.addEventListener('click', (e) => {
+    if (popup.style.display === 'block' &&
+        !e.target.closest('.vt-comment-popup, .vt-comment-trigger')) closePopup();
+  });
+
+  render();
+})();
+</script>
+<style>@media(max-width:800px){.vt-comment-pill{bottom:76px}.vt-comment-list{bottom:120px}}@media(hover:none){.vt-comment-trigger:hover,.vt-comment-pill:hover{background:var(--paper);color:var(--clay)}}.vt-comment-popup textarea{font-size:16px}.vt-comment-popup .actions{flex-wrap:wrap;gap:8px}.vt-comment-list-header{text-transform:none;letter-spacing:0}.vt-comment-item .item-del{min-height:36px}</style>
+</body></html>
