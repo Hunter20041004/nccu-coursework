@@ -1,0 +1,65 @@
+<script setup>
+const steps = [
+  { num: 1, title: '選擇來源',  desc: '在左側選資料夾,或分批選幾張圖片。' },
+  { num: 2, title: '啟動掃描',  desc: '點擊「啟動 AI 掃描」,AI 逐張分析。' },
+  { num: 3, title: '檢視建議',  desc: '在 Bad 分頁確認 AI 建議檢視的照片。' },
+  { num: 4, title: '刪除或還原',  desc: '先移到 Trash,可還原或送進電腦垃圾桶。' },
+]
+
+const classes = [
+  { glyph: '✓', tag: 'GOOD',   name: '完美表情',     desc: '表情自然、雙眼張開、清晰可見',
+    accent: 'var(--sage)',     tint: 'var(--sage-tint)' },
+  { glyph: '⚠', tag: 'BAD',    name: '建議檢視',     desc: '閉眼、嘴歪、表情扭曲、明顯模糊',
+    accent: 'var(--crimson)',  tint: 'var(--crimson-tint)' },
+  { glyph: '○', tag: 'NOFACE', name: '未偵測到人臉', desc: '背影、風景、寵物、或臉太小',
+    accent: 'var(--ink-mute)', tint: 'rgba(132,126,111,0.12)' },
+]
+</script>
+
+<template>
+  <div class="hero">
+    <span class="hero-eyebrow">App v0.2.0 · Model v1.0.0</span>
+    <div class="hero-title">
+      標記相簿裡<span class="accent">可能需要檢視的照片</span>,<br />
+      一鍵軟刪除。
+    </div>
+    <div class="hero-lead">
+      用自訓的 <b>MobileNetV3-Large</b> 神經網路,協助找出閉眼、嘴歪、模糊等需要人工檢視的照片。
+      <b>本機運行,完全離線</b> — 你的照片不會離開這台電腦。
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="num">01</span>
+    <span class="title">使用流程</span>
+    <span class="sub-en">Workflow</span>
+  </div>
+  <div class="workflow">
+    <div v-for="s in steps" :key="s.num" class="workflow-step">
+      <div class="num">{{ s.num }}</div>
+      <div class="title">{{ s.title }}</div>
+      <div class="desc">{{ s.desc }}</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="num">02</span>
+    <span class="title">AI 怎麼分類</span>
+    <span class="sub-en">Classification</span>
+  </div>
+  <div class="classifier-grid">
+    <div v-for="c in classes" :key="c.tag"
+         class="class-card"
+         :style="{ '--accent': c.accent, '--accent-tint': c.tint }">
+      <div class="icon-wrap">{{ c.glyph }}</div>
+      <div class="tag">{{ c.tag }}</div>
+      <div class="name">{{ c.name }}</div>
+      <div class="desc">{{ c.desc }}</div>
+    </div>
+  </div>
+
+  <div class="app-footer">
+    Darkroom <span class="accent">·</span> Built with FastAPI + Vue 3
+    <span class="accent">·</span> MIT License
+  </div>
+</template>
