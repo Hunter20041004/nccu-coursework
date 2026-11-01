@@ -1,4 +1,4 @@
-# microbit-anti-theft-radio
+# micro:bit 防盜廣播
 
 雙向 micro:bit 防盜警報器，符合以下作業要求：
 
@@ -48,13 +48,11 @@ P0  ─── 鱷魚夾 ─── [ 外接按鈕 ] ─── 鱷魚夾 ───
 
 ## 在另一台電腦使用
 
-1. 打開 GitHub repository：
-   `https://github.com/Hunter20041004/microbit-anti-theft-radio`
-2. 前往 `https://makecode.microbit.org/`
-3. 選擇 **Import / 匯入**。
-4. 選擇 **Import URL / 匯入網址**。
-5. 貼上：
-   `https://github.com/Hunter20041004/microbit-anti-theft-radio`
+1. 打開本資料夾的 `main.ts`，按 **Copy raw file** 複製整段程式。
+2. 前往 `https://makecode.microbit.org/`，建立 **New Project / 新專案**。
+3. 上方切換到 **JavaScript**。
+4. 刪掉預設內容，貼上 `main.ts`。
+5. 確認 **Extensions / 擴充功能** 裡有 `radio`（新專案預設就有）。
 6. 開啟專案後，以 USB 連接第一台 micro:bit。
 7. 按 **Download / 下載**。
 8. 若瀏覽器支援 WebUSB，可以 Pair / Connect 後直接下載；否則把下載好的 `.hex` 檔拖到 `MICROBIT` 磁碟。

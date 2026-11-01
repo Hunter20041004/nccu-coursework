@@ -18,4 +18,4 @@
 
 資料為合成情境，方案數字為預設示範值。AI 問答為腳本，沒有連接真實工廠、模型或排程引擎。角色僅示範責任，不是帳號權限。進度在重新整理後重設，報告請下載保存；評論只存於自己的瀏覽器。字體與 Tailwind 引用外部 CDN。
 
-公開網址：https://Hunter20041004.github.io/factorymind-webapp/
+公開網址：https://hunter20041004.github.io/nccu-coursework/115-1/%E6%99%BA%E6%85%A7%E4%BA%BA%E6%A9%9F%E4%BA%92%E5%8B%95/%E4%BD%9C%E6%A5%AD%EF%BD%9CFactoryMind%20%E4%BA%92%E5%8B%95%E7%A4%BA%E7%AF%84/

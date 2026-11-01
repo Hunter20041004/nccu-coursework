@@ -1,7 +1,5 @@
 # AI 表情相簿管家 — Smart Album Cleaner
 
-[![CI](https://github.com/Hunter20041004/smart-album-cleaner/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Hunter20041004/smart-album-cleaner/actions/workflows/ci.yml)
-
 Smart Album Cleaner 是在本機執行的照片整理工具。它使用 MobileNetV3 模型分析人臉表情品質，讓使用者檢視掃描結果，並以可還原的 Trash 流程整理照片。
 
 目前唯一的應用程式架構是 **FastAPI + Vue 3**：`backend/main.py` 提供 REST API 並服務建置後的前端，`frontend/` 是 Vue 3 SPA。專案不再提供另一套 Web UI 入口。
@@ -34,11 +32,11 @@ contains no real or private photos.
 ### macOS / Linux
 
 ```bash
-git clone https://github.com/Hunter20041004/smart-album-cleaner.git
-cd smart-album-cleaner
+git clone https://github.com/Hunter20041004/nccu-coursework.git
+cd "nccu-coursework/以前/設計思考與人工智慧/作業｜智慧相簿整理"
 
 set -euo pipefail
-MODEL_URL=https://github.com/Hunter20041004/smart-album-cleaner/releases/download/v1.0.0/mobilenet_face.pth
+MODEL_URL=https://github.com/Hunter20041004/nccu-coursework/releases/download/smart-album-v1.0.0/mobilenet_face.pth
 MODEL_SHA256=b7dd3b7d95c13c07167d269d65f49367d0b0007fcf0dc272ab1f94c34f3f4bf0
 MODEL_TMP="$(mktemp)"
 trap 'rm -f "$MODEL_TMP"' EXIT
@@ -58,10 +56,10 @@ trap - EXIT
 > 平台限制：原生資料夾／檔案選擇器與完整 UI 掃描流程目前僅支援 macOS。下列 Windows 指令僅供前後端開發啟動；目前 Windows UI 無法選取掃描來源，也不支援完整掃描流程。
 
 ```bat
-git clone https://github.com/Hunter20041004/smart-album-cleaner.git
-cd smart-album-cleaner
+git clone https://github.com/Hunter20041004/nccu-coursework.git
+cd "nccu-coursework\以前\設計思考與人工智慧\作業｜智慧相簿整理"
 
-set "MODEL_URL=https://github.com/Hunter20041004/smart-album-cleaner/releases/download/v1.0.0/mobilenet_face.pth"
+set "MODEL_URL=https://github.com/Hunter20041004/nccu-coursework/releases/download/smart-album-v1.0.0/mobilenet_face.pth"
 set "MODEL_SHA256=b7dd3b7d95c13c07167d269d65f49367d0b0007fcf0dc272ab1f94c34f3f4bf0"
 set "MODEL_TMP=%TEMP%\mobilenet_face-%RANDOM%.pth"
 curl -fL "%MODEL_URL%" -o "%MODEL_TMP%"

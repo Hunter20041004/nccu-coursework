@@ -64,7 +64,7 @@ def _classifier_install_bash_block() -> str:
         "### Windows", maxsplit=1
     )[0]
     code = macos.split("```bash", maxsplit=1)[1].split("```", maxsplit=1)[0]
-    return code.split("cd smart-album-cleaner", maxsplit=1)[1].split(
+    return code.split('cd "nccu-coursework/以前/設計思考與人工智慧/作業｜智慧相簿整理"', maxsplit=1)[1].split(
         "./run.sh", maxsplit=1
     )[0]
 
@@ -598,7 +598,7 @@ def test_readme_limits_mit_scope_and_states_artifact_licences():
 def test_model_card_records_verified_release_artifact():
     card = (ROOT / "docs/MODEL_CARD.md").read_text(encoding="utf-8")
 
-    assert "Release tag: `v1.0.0`" in card
+    assert "Release tag: `smart-album-v1.0.0`" in card
     assert (
         "SHA-256: `b7dd3b7d95c13c07167d269d65f49367d0b0007fcf0dc272ab1f94c34f3f4bf0`"
         in card
@@ -609,8 +609,8 @@ def test_classifier_release_download_is_pinned_and_verified():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     card = (ROOT / "docs/MODEL_CARD.md").read_text(encoding="utf-8")
     release_url = (
-        "https://github.com/Hunter20041004/smart-album-cleaner/"
-        "releases/download/v1.0.0/mobilenet_face.pth"
+        "https://github.com/Hunter20041004/nccu-coursework/"
+        "releases/download/smart-album-v1.0.0/mobilenet_face.pth"
     )
     digest = "b7dd3b7d95c13c07167d269d65f49367d0b0007fcf0dc272ab1f94c34f3f4bf0"
     macos = readme.split("### macOS / Linux", maxsplit=1)[1].split(

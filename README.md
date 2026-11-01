@@ -1,6 +1,6 @@
 # 政大課程作業
 
-曾尉庭（政大會計系）修課時寫的程式作業。一門課一個資料夾，點「在 Colab 開啟」就能直接執行，不用下載。
+曾尉庭（政大會計系）修課時寫的程式作業。一門課一個資料夾；筆記本點「在 Colab 開啟」就能直接執行，不用下載。網頁與應用程式類作業在各自資料夾裡有說明。
 
 需要 API 金鑰的筆記本（Gemini、Groq）都從 Colab 的「密鑰（Secrets）」讀取，程式裡沒有任何金鑰；要執行請用自己的金鑰。
 
@@ -15,8 +15,9 @@
 | 生成式 AI：文字與圖像生成的原理與實務 | RAG 愛麗絲仙境查案員（2 問答） | [在 Colab 開啟](https://colab.research.google.com/github/Hunter20041004/nccu-coursework/blob/main/115-1/%E7%94%9F%E6%88%90%E5%BC%8F%20AI%EF%BC%9A%E6%96%87%E5%AD%97%E8%88%87%E5%9C%96%E5%83%8F%E7%94%9F%E6%88%90%E7%9A%84%E5%8E%9F%E7%90%86%E8%88%87%E5%AF%A6%E5%8B%99/%E4%BD%9C%E6%A5%AD%EF%BD%9CRAG%20%E6%84%9B%E9%BA%97%E7%B5%B2%E4%BB%99%E5%A2%83%E6%9F%A5%E6%A1%88%E5%93%A1%EF%BC%882%20%E5%95%8F%E7%AD%94%EF%BC%89.ipynb) |
 | 生成式 AI：文字與圖像生成的原理與實務 | 創業提案陪練 | [在 Colab 開啟](https://colab.research.google.com/github/Hunter20041004/nccu-coursework/blob/main/115-1/%E7%94%9F%E6%88%90%E5%BC%8F%20AI%EF%BC%9A%E6%96%87%E5%AD%97%E8%88%87%E5%9C%96%E5%83%8F%E7%94%9F%E6%88%90%E7%9A%84%E5%8E%9F%E7%90%86%E8%88%87%E5%AF%A6%E5%8B%99/%E4%BD%9C%E6%A5%AD%EF%BD%9C%E5%89%B5%E6%A5%AD%E6%8F%90%E6%A1%88%E9%99%AA%E7%B7%B4.ipynb) |
 | 生成式 AI：文字與圖像生成的原理與實務 | 數學愛心函數圖 | [在 Colab 開啟](https://colab.research.google.com/github/Hunter20041004/nccu-coursework/blob/main/115-1/%E7%94%9F%E6%88%90%E5%BC%8F%20AI%EF%BC%9A%E6%96%87%E5%AD%97%E8%88%87%E5%9C%96%E5%83%8F%E7%94%9F%E6%88%90%E7%9A%84%E5%8E%9F%E7%90%86%E8%88%87%E5%AF%A6%E5%8B%99/%E4%BD%9C%E6%A5%AD%EF%BD%9C%E6%95%B8%E5%AD%B8%E6%84%9B%E5%BF%83%E5%87%BD%E6%95%B8%E5%9C%96.ipynb) |
-| 生成式 AI：文字與圖像生成的原理與實務 | RAG 愛麗絲仙境查案員用的知識庫 | [alice-rag-data](https://github.com/Hunter20041004/alice-rag-data) |
-| 智慧人機互動 | FactoryMind 互動網頁 | [factorymind-webapp](https://github.com/Hunter20041004/factorymind-webapp) |
+| 生成式 AI：文字與圖像生成的原理與實務 | RAG 愛麗絲仙境查案員（資料）：問答筆記本會自動下載 | [資料夾](https://github.com/Hunter20041004/nccu-coursework/tree/main/115-1/%E7%94%9F%E6%88%90%E5%BC%8F%20AI%EF%BC%9A%E6%96%87%E5%AD%97%E8%88%87%E5%9C%96%E5%83%8F%E7%94%9F%E6%88%90%E7%9A%84%E5%8E%9F%E7%90%86%E8%88%87%E5%AF%A6%E5%8B%99/%E4%BD%9C%E6%A5%AD%EF%BD%9CRAG%20%E6%84%9B%E9%BA%97%E7%B5%B2%E4%BB%99%E5%A2%83%E6%9F%A5%E6%A1%88%E5%93%A1%EF%BC%88%E8%B3%87%E6%96%99%EF%BC%89) |
+| 智慧人機互動 | FactoryMind 互動示範 | [線上網頁](https://hunter20041004.github.io/nccu-coursework/115-1/%E6%99%BA%E6%85%A7%E4%BA%BA%E6%A9%9F%E4%BA%92%E5%8B%95/%E4%BD%9C%E6%A5%AD%EF%BD%9CFactoryMind%20%E4%BA%92%E5%8B%95%E7%A4%BA%E7%AF%84/) · [資料夾](https://github.com/Hunter20041004/nccu-coursework/tree/main/115-1/%E6%99%BA%E6%85%A7%E4%BA%BA%E6%A9%9F%E4%BA%92%E5%8B%95/%E4%BD%9C%E6%A5%AD%EF%BD%9CFactoryMind%20%E4%BA%92%E5%8B%95%E7%A4%BA%E7%AF%84) |
+| 計算思維與人工智慧應用導論 | micro:bit 防盜廣播 | [資料夾](https://github.com/Hunter20041004/nccu-coursework/tree/main/115-1/%E8%A8%88%E7%AE%97%E6%80%9D%E7%B6%AD%E8%88%87%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7%E6%87%89%E7%94%A8%E5%B0%8E%E8%AB%96/%E4%BD%9C%E6%A5%AD%EF%BD%9Cmicrobit%20%E9%98%B2%E7%9B%9C%E5%BB%A3%E6%92%AD) |
 
 ## 以前修過的課
 
@@ -28,5 +29,5 @@
 | 設計思考與人工智慧 | DNN 手寫數字辨識器 | [在 Colab 開啟](https://colab.research.google.com/github/Hunter20041004/nccu-coursework/blob/main/%E4%BB%A5%E5%89%8D/%E8%A8%AD%E8%A8%88%E6%80%9D%E8%80%83%E8%88%87%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7/%E4%BD%9C%E6%A5%AD%EF%BD%9CDNN%20%E6%89%8B%E5%AF%AB%E6%95%B8%E5%AD%97%E8%BE%A8%E8%AD%98%E5%99%A8.ipynb) |
 | 設計思考與人工智慧 | 數學函數與愛心曲線繪圖 | [在 Colab 開啟](https://colab.research.google.com/github/Hunter20041004/nccu-coursework/blob/main/%E4%BB%A5%E5%89%8D/%E8%A8%AD%E8%A8%88%E6%80%9D%E8%80%83%E8%88%87%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7/%E4%BD%9C%E6%A5%AD%EF%BD%9C%E6%95%B8%E5%AD%B8%E5%87%BD%E6%95%B8%E8%88%87%E6%84%9B%E5%BF%83%E6%9B%B2%E7%B7%9A%E7%B9%AA%E5%9C%96.ipynb) |
 | 設計思考與人工智慧 | 電影預告片旁白反思器 | [在 Colab 開啟](https://colab.research.google.com/github/Hunter20041004/nccu-coursework/blob/main/%E4%BB%A5%E5%89%8D/%E8%A8%AD%E8%A8%88%E6%80%9D%E8%80%83%E8%88%87%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7/%E4%BD%9C%E6%A5%AD%EF%BD%9C%E9%9B%BB%E5%BD%B1%E9%A0%90%E5%91%8A%E7%89%87%E6%97%81%E7%99%BD%E5%8F%8D%E6%80%9D%E5%99%A8.ipynb) |
-| 設計思考與人工智慧 | 智慧相簿整理 | [smart-album-cleaner](https://github.com/Hunter20041004/smart-album-cleaner) |
-| 資料分析與程式設計入門 | 大台北咖啡廳推薦系統（Excel／VBA） | [taipei-cafe-recommender-excel](https://github.com/Hunter20041004/taipei-cafe-recommender-excel) |
+| 設計思考與人工智慧 | 智慧相簿整理（FastAPI＋Vue，本機執行） | [資料夾](https://github.com/Hunter20041004/nccu-coursework/tree/main/%E4%BB%A5%E5%89%8D/%E8%A8%AD%E8%A8%88%E6%80%9D%E8%80%83%E8%88%87%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7/%E4%BD%9C%E6%A5%AD%EF%BD%9C%E6%99%BA%E6%85%A7%E7%9B%B8%E7%B0%BF%E6%95%B4%E7%90%86) |
+| 資料分析與程式設計入門 | 大台北咖啡廳推薦系統（Excel／VBA） | [資料夾](https://github.com/Hunter20041004/nccu-coursework/tree/main/%E4%BB%A5%E5%89%8D/%E8%B3%87%E6%96%99%E5%88%86%E6%9E%90%E8%88%87%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%E5%85%A5%E9%96%80/%E4%BD%9C%E6%A5%AD%EF%BD%9C%E5%A4%A7%E5%8F%B0%E5%8C%97%E5%92%96%E5%95%A1%E5%BB%B3%E6%8E%A8%E8%96%A6%E7%B3%BB%E7%B5%B1) |

@@ -84,7 +84,7 @@ irreversible deletion without an explicit human decision.
 The classifier asset named `mobilenet_face.pth` was downloaded from the current
 GitHub release to a temporary directory and hashed on 2026-07-13:
 
-- Release tag: `v1.0.0`
+- Release tag: `smart-album-v1.0.0`
 - Size: `12,098,423 bytes`
 - SHA-256: `b7dd3b7d95c13c07167d269d65f49367d0b0007fcf0dc272ab1f94c34f3f4bf0`
 
