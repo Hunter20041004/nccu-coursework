@@ -59,7 +59,7 @@ def _validate_error_report(report: str) -> list[tuple[str, ...]]:
 
 
 def _classifier_install_bash_block() -> str:
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "docs" / "SETUP.md").read_text(encoding="utf-8")
     macos = readme.split("### macOS / Linux", maxsplit=1)[1].split(
         "### Windows", maxsplit=1
     )[0]
@@ -400,7 +400,7 @@ def test_portfolio_dashboard_is_exact_synthetic_png():
 
 
 def test_readme_states_current_macos_ui_limit():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "docs" / "SETUP.md").read_text(encoding="utf-8")
 
     assert "原生資料夾／檔案選擇器與完整 UI 掃描流程目前僅支援 macOS" in readme
     assert "Windows 指令僅供前後端開發啟動" in readme
@@ -443,7 +443,7 @@ def test_app_and_model_versions_are_distinct_and_consistent():
 
 
 def test_readme_installs_verification_prerequisites_before_checks():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "docs" / "SETUP.md").read_text(encoding="utf-8")
     verification = readme.split("## 驗證", maxsplit=1)[1]
     install = ".venv/bin/python -m pip install -r requirements-dev.txt"
     pytest = ".venv/bin/python -m pytest -q"
@@ -467,7 +467,7 @@ def test_no_streamlit_configuration_is_tracked():
 
 
 def test_self_training_commands_use_the_project_virtualenv():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "docs" / "SETUP.md").read_text(encoding="utf-8")
     commands = (
         ".venv/bin/python -m src.prepare_dataset",
         ".venv/bin/python -m src.train_mobilenet --arch mobilenet_v3_large",
@@ -563,11 +563,8 @@ def test_readme_summarizes_model_evidence_and_limits():
 
 def test_readme_embeds_synthetic_dashboard_evidence():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    heading = "## Synthetic UI evidence"
-    assert heading in readme
-    evidence = readme.split(heading, maxsplit=1)[1].split(
-        "## ", maxsplit=1
-    )[0]
+    # The screenshot sits in the README's first screen, before any section.
+    evidence = readme.split("## ", maxsplit=1)[0]
 
     assert re.search(
         r"!\[[^\]]+\]\(docs/screenshots/dashboard\.png\)", evidence
@@ -606,7 +603,7 @@ def test_model_card_records_verified_release_artifact():
 
 
 def test_classifier_release_download_is_pinned_and_verified():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "docs" / "SETUP.md").read_text(encoding="utf-8")
     card = (ROOT / "docs/MODEL_CARD.md").read_text(encoding="utf-8")
     release_url = (
         "https://github.com/Hunter20041004/nccu-coursework/"
@@ -665,7 +662,7 @@ def test_classifier_install_validator_rejects_missing_temp_cleanup(tmp_path):
 
 
 def test_windows_classifier_verification_has_fail_closed_control_flow():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "docs" / "SETUP.md").read_text(encoding="utf-8")
     windows = readme.split("### Windows", maxsplit=1)[1].split(
         "## 開發模式", maxsplit=1
     )[0]

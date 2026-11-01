@@ -121,7 +121,11 @@ def test_native_file_picker_authorizes_the_selected_files_common_root(
 
 def test_launch_files_never_bind_to_all_network_interfaces():
     root = Path(__file__).resolve().parents[1]
-    launch_text = (root / "run.sh").read_text() + (root / "README.md").read_text()
+    launch_text = (
+        (root / "run.sh").read_text()
+        + (root / "README.md").read_text()
+        + (root / "docs" / "SETUP.md").read_text()
+    )
     assert "--host 0.0.0.0" not in launch_text
 
 
